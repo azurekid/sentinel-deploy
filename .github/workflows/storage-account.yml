@@ -19,8 +19,8 @@ jobs:
       with:
         subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
         resourceGroupName: '329ce62c-c677-4f9c-9266-0dcefa7eac1e-rg'
-        template: ./packages/azure-ad/storageaccount.json
-        parameters: storageAccountType=Standard_LRS
+        template: ./packages/azure-ad/workspace.bicep
+        parameters: workspacename=rdk-workspace-bicep
 
       # output containerName variable from template.
     - run: echo ${{ steps.deploy.outputs.containerName }}
