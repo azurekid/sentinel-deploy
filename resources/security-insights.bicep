@@ -26,16 +26,16 @@ resource SecurityInsights 'Microsoft.OperationsManagement/solutions@2015-11-01-p
   }
 }
 
-resource workspaceName_subscriptionId 'Microsoft.OperationalInsights/workspaces/dataSources@2020-03-01-preview' = {
+resource workspaceName 'Microsoft.OperationalInsights/workspaces/dataSources@2020-03-01-preview' = {
   parent: workspace
   name: replace(subscription().subscriptionId, '-', '')
   kind: 'AzureActivityLog'
   properties: {
-    linkedResourceId: resourceId
+    linkedResourceId: workspace.id
   }
 }
 
-resource workspaceName_SecurityInsightsSecurityEventCollectionConfiguration 'Microsoft.OperationalInsights/workspaces/dataSources@2020-03-01-preview' = {
+resource workspaceName 'Microsoft.OperationalInsights/workspaces/dataSources@2020-03-01-preview' = {
   parent: workspace
   name: 'SecurityInsightsSecurityEventCollectionConfiguration'
   kind: 'SecurityInsightsSecurityEventCollectionConfiguration'
