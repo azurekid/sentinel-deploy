@@ -22,5 +22,5 @@ jobs:
         template: ./packages/azure-ad/storageaccount.json
         parameters: storageAccountType=Standard_LRS
 
-      # output containerName variable from template
+      # output containerName variable from template.
     - run: echo ${{ steps.deploy.outputs.containerName }}
