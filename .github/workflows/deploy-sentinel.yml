@@ -22,7 +22,7 @@ jobs:
         subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
         resourceGroupName: ${{ env.sentinelResourceGroup }}
         template: ./resources/workspace.bicep
-        parameters: workspaceName=${{ variables.workspaceName }}
+        parameters: workspaceName=${{ env.workspaceName }}
     
     - name: Enable Microsoft Sentinel
       uses: azure/arm-deploy@v1
