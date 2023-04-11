@@ -8,13 +8,14 @@ jobs:
       # Checkout code
     - uses: actions/checkout@main
       # Load variables
-    - uses: './environments/nonprod.yml'
     
       # Log into Azure
     - uses: azure/login@v1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
-
+    
+    - uses: './environments/nonprod.yml'
+    
       # Deploy ARM template
     - name: Create Log Analytics workspace
       uses: azure/arm-deploy@v1
