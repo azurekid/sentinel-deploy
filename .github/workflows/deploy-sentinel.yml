@@ -20,7 +20,7 @@ jobs:
         subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
         resourceGroupName: '329ce62c-c677-4f9c-9266-0dcefa7eac1e-rg'
         template: ./resources/workspace.bicep
-        parameters: workspaceName=rdk-workspace-bicep
+        parameters: workspaceName = 'rdk-workspace-bicep'
     
     - name: Enable Microsoft Sentinel
       uses: azure/arm-deploy@v1
@@ -28,7 +28,7 @@ jobs:
         subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
         resourceGroupName: '329ce62c-c677-4f9c-9266-0dcefa7eac1e-rg'
         template: ./resources/security-insights.bicep
-        parameters: workspaceName=rdk-workspace-bicep
+        parameters: workspaceName = 'rdk-workspace-bicep'
 
       # output containerName variable from template.
     - run: echo ${{ steps.deploy.outputs.containerName }}
