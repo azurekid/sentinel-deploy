@@ -20,7 +20,7 @@ jobs:
       uses: azure/arm-deploy@v1
       with:
         subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
-        resourceGroupName: ${{ varaiables.sentinelResourceGroup }}
+        resourceGroupName: ${{ variables.sentinelResourceGroup }}
         template: ./resources/workspace.bicep
         parameters: workspaceName=${{ variables.workspaceName }}
     
@@ -28,7 +28,7 @@ jobs:
       uses: azure/arm-deploy@v1
       with:
         subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
-        resourceGroupName: ${{ varaiables.sentinelResourceGroup }}
+        resourceGroupName: ${{ variables.sentinelResourceGroup }}
         template: ./resources/security-insights.bicep
         parameters: workspaceName=${{ variables.workspaceName }}
 
