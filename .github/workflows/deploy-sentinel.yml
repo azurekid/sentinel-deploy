@@ -17,7 +17,6 @@ jobs:
     - run: |
         Get-Content './environments/nonprod.yml' >> $Env:GITHUB_ENV   # <- Adding directly $Env:GITHUB_ENV saves at the workflow level
       shell: pwsh
-    - uses: './environments/nonprod.yml'
     
       # Deploy ARM template
     - name: Create Log Analytics workspace
