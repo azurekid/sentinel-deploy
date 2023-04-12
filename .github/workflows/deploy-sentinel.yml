@@ -24,7 +24,7 @@ jobs:
     - name: Create Json Array
       id: array
       run: |
-          $arrayList = ${{ env.customerSolutions }} -split ';' | ConvertTo-Json
+          $arrayList = "${{ env.customerSolutions }}" -split ';' | ConvertTo-Json
           echo $arrayList
           echo "arrayList=$arrayList" >> $GITHUB_OUTPUT
       shell: pwsh
