@@ -12,10 +12,11 @@ jobs:
       # Load variables
     - name: Set Variables
       uses: SecureHats/JsonTo-Variable@v0.0.20
+      id: step1
       with:
         filePath: './environments/nonprod.json'
         arraySeparator: ','
-        outputs: $false
+        outputs: $true
     
       # Log into Azure
     - uses: azure/login@v1
@@ -42,8 +43,9 @@ jobs:
   example_matrix:
     strategy:
       matrix:
-        package: ${{ env.customerSolutions }}
+        package: ${{ needs.build-and-deploy.outputs.customerSolutions }}
     runs-on: ubuntu-latest
+    needs: build-and-deploy
     steps:
       # Checkout code
       - uses: actions/checkout@main
