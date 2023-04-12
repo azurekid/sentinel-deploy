@@ -45,7 +45,7 @@ jobs:
   example_matrix:
     strategy:
       matrix:
-        package: '[ ${{ needs.build-and-deploy.outputs.customerSolutions }} ]'
+        package: [ ${{ needs.build-and-deploy.outputs.customerSolutions }} ]
     runs-on: ubuntu-latest
     needs: build-and-deploy
     steps:
