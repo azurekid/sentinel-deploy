@@ -26,7 +26,7 @@ jobs:
       run: |
           $arrayList = "${{ env.customerSolutions }}" -split ';'
           echo $arrayList
-          echo ::set-output name=list::${{ toJSON($arrayList) }}
+          echo ::set-output name=list::${{ toJSON(arrayList) }}
       shell: pwsh
       
       #  Log into Azure
