@@ -25,6 +25,7 @@ jobs:
       id: array
       run: |
           $arrayList = ${{ env.customerSolution }} -split ';' | ConvertTo-Json
+          echo $arrayList
           echo "arrayList=$arrayList" >> $GITHUB_OUTPUT
       shell: pwsh
       
