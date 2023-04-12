@@ -15,6 +15,7 @@ jobs:
       with:
         filePath: './environments/nonprod.json'
         arraySeparator: ','
+        outputs: false
     
       # Log into Azure
     - uses: azure/login@v1
