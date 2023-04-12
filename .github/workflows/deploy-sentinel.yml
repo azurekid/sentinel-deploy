@@ -13,7 +13,7 @@ jobs:
       
       # Load variables
     - name: Set Variables
-      uses: SecureHats/JsonTo-Variable@v0.0.21
+      uses: SecureHats/JsonTo-Variable@v0.0.22
       id: step1
       with:
         filePath: './environments/nonprod.json'
@@ -57,7 +57,7 @@ jobs:
         run: echo "${{ toJSON(needs.build-and-deploy.outputs) }}"
       
       - name: Set Variables
-        uses: SecureHats/JsonTo-Variable@v0.0.20
+        uses: SecureHats/JsonTo-Variable@v0.0.22
         with:
           filePath: './environments/nonprod.json'
           arraySeparator: ','
