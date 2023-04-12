@@ -23,8 +23,8 @@ jobs:
       
     - name: Create Json Array
       id: array
-      run: |
-        $arrayList = ${{ env.customerSolution }} -split ';' | ConvertTo-Json
+#       run: $arrayList = ${{ env.customerSolution }} -split ';' | ConvertTo-Json
+      run: Write-Host 'Hello, World'
       shell: pwsh
       
       #  Log into Azure
