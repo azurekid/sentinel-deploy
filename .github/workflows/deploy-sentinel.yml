@@ -45,6 +45,9 @@ jobs:
         package: [azure-ad, azure-filewall]
     runs-on: ubuntu-latest
     steps:
+      # Checkout code
+      - uses: actions/checkout@main
+    
       - name: Set Variables
         uses: SecureHats/JsonTo-Variable@v0.0.20
         with:
