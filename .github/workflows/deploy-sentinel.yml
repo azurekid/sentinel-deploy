@@ -42,7 +42,7 @@ jobs:
   example_matrix:
     strategy:
       matrix:
-        package: [azure-ad, azure-filewall]
+        package: ${{ env.customerSolutions }}
     runs-on: ubuntu-latest
     steps:
       # Checkout code
@@ -65,4 +65,4 @@ jobs:
           subscriptionId:    ${{ secrets.AZURE_SUBSCRIPTION }}
           resourceGroupName: ${{ env.sentinelResourceGroup }}
           template:          "./packages/${{ matrix.package }}/template.json"
-          parameters:        "workspaceName=${{ env.workspaceName }}"
+          parameters:        "workspace=${{ env.workspaceName }}"
