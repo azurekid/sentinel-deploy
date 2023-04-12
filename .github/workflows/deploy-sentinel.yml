@@ -8,41 +8,32 @@ jobs:
 
       # Checkout code
     - uses: actions/checkout@main
+      
       # Load variables
+    - name: Set Variables
+      uses: SecureHats/JsonTo-Variable@v0.0.20
+      with:
+        filePath: './environments/nonprod.json'
+        arraySeparator: ','
     
       # Log into Azure
     - uses: azure/login@v1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
     
-    - name: SecureHats JsonTo-Variable
-      id: variables
-      uses: SecureHats/JsonTo-Variable@v0.0.20
-      with:
-        filePath: './environments/nonprod.json'
-        arraySeparator: ','
-        outputs: $true
-        
-#     - run: |
-#         Get-Content './environments/nonprod.yml' >> $Env:GITHUB_ENV   # <- Adding directly $Env:GITHUB_ENV saves at the workflow level
-#       shell: pwsh
-    
       # Deploy ARM template
     - name: Create Log Analytics workspace
       uses: azure/arm-deploy@v1
       with:
-        subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
+        subscriptionId:    ${{ secrets.AZURE_SUBSCRIPTION }}
         resourceGroupName: ${{ env.sentinelResourceGroup }}
-        template: ./resources/workspace.bicep
-        parameters: workspaceName=${{ env.workspaceName }}
+        template:          "./resources/workspace.bicep"
+        parameters:        "workspaceName=${{ env.workspaceName }}"
     
     - name: Enable Microsoft Sentinel
       uses: azure/arm-deploy@v1
       with:
-        subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
+        subscriptionId:    ${{ secrets.AZURE_SUBSCRIPTION }}
         resourceGroupName: ${{ env.sentinelResourceGroup }}
-        template: ./resources/security-insights.bicep
-        parameters: workspaceName=${{ env.workspaceName }}
-
-      # output containerName variable from template.
-    - run: echo ${{ steps.deploy.outputs.containerName }}
+        template:          "./resources/security-insights.bicep"
+        parameters:        "workspaceName=${{ env.workspaceName }}"
