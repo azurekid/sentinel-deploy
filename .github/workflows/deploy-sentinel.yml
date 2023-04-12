@@ -4,6 +4,8 @@ jobs:
           
   build-and-deploy:
     runs-on: ubuntu-latest
+    outputs:
+      customerSolutions: ${{ env.customerSolutions }}
     steps:
 
       # Checkout code
