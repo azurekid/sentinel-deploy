@@ -6,7 +6,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       customerSolutions: ${{ env.customerSolutions }}
-      array: ${{ env.arrayList }}
+      array: ${{ steps.array.outputs.arrayList }}
     steps:
 
       # Checkout code
@@ -23,7 +23,9 @@ jobs:
       
     - name: Create Json Array
       id: array
-      run: $arrayList = ${{ env.customerSolution }} -split ';' | ConvertTo-Json
+      run: |
+          $arrayList = ${{ env.customerSolution }} -split ';' | ConvertTo-Json
+          echo "arrayList=$arrayList" >> $GITHUB_OUTPUT
       shell: pwsh
       
       #  Log into Azure
