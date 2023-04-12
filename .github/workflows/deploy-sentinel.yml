@@ -5,7 +5,7 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     outputs:
-      customerSolutions: ${{ toJSON(env.customerSolutions) }}
+      customerSolutions: ${{ env.customerSolutions }}
     steps:
 
       # Checkout code
@@ -13,7 +13,7 @@ jobs:
       
       # Load variables
     - name: Set Variables
-      uses: SecureHats/JsonTo-Variable@v0.0.20
+      uses: SecureHats/JsonTo-Variable@v0.0.21
       id: step1
       with:
         filePath: './environments/nonprod.json'
@@ -45,7 +45,7 @@ jobs:
   example_matrix:
     strategy:
       matrix:
-        package: ["azure-ad"] #${{ fromJSON(needs.build-and-deploy.outputs) }}
+        package: ${{ fromJSON(needs.build-and-deploy.outputs) }}
     runs-on: ubuntu-latest
     needs: build-and-deploy
       
