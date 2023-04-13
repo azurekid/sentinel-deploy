@@ -7,7 +7,7 @@
       "defaultValue": "Guest accounts changed user type from guest to members in AzureAD"
     },
     "workspace": {
-      "type": "sentinel-nonprd"
+      "type": "string"
     }
   },
   "resources": [
