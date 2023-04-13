@@ -23,7 +23,7 @@ jobs:
     - name: Create Json Array
       id: step2
       run: |
-          $arrayList = "${{ env.customerSolutions }}" -split ';'
+          $arrayList = "${{ env.customerSolutions }}" -split ';' | ConvertTo-Json
           echo $arrayList
           echo "::set-output name=list::$arrayList"
       shell: pwsh
