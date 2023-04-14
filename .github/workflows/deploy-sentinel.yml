@@ -88,7 +88,10 @@ jobs:
         uses: azure/powershell@v1
         with:
           inlineScript: |
-            Write-Output "show parsed files:" ${{ fromJSON(env.files) }}
+            foreach ($file in ${{ fromJson(env.files) }} ) {
+              Write-Output "show parsed files:" $file
+            }
+            
           #  foreach ($template in ${{ fromJSON(env.files) }})
           #   New-AzResourceGroupDeployment -name "${{ matrix.package }}" -ResourceGroupName "${{ env.sentinelResourceGroup }}" -TemplateFile  $template -workspace "${{ env.workspaceName }}"
           azPSVersion: "latest"
