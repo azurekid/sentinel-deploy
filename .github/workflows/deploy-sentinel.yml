@@ -65,20 +65,36 @@ jobs:
         run: echo "${{ toJSON(needs.build-and-deploy.outputs.array) }}"
       
       - name: Set Variables
-        uses: SecureHats/JsonTo-Variable@v0.0.22
+        uses: SecureHats/JsonTo-Variable@v0.0.20
         with:
           filePath: './environments/nonprod.json'
           arraySeparator: ';'
           outputs: $false
-        
+      
+      - name: Enumerate files
+        id: get-files
+        run: | 
+            $files = (Get-ChildItem -path ./packages/${{ matrix.package }} -Include "*.json" -Recurse).FullName | ConvertTo-Json -Compress
+            echo "files=$files" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8 -Append
+        shell: pwsh
+
       # Log into Azure
       - uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
-      
-      - uses: azure/arm-deploy@v1
+          enable-AzPSSession: true
+
+      - name: Run Azure PowerShell script
+        uses: azure/powershell@v1
         with:
-          subscriptionId:    ${{ secrets.AZURE_SUBSCRIPTION }}
-          resourceGroupName: ${{ env.sentinelResourceGroup }}
-          template:          "./packages/${{ matrix.package }}/template.json"
-          parameters:        "workspace=${{ env.workspaceName }}"
+          inlineScript: |
+           foreach ($template in ${{ fromJSON(env.files) }})
+            New-AzResourceGroupDeployment -name "${{ matrix.package }}" -ResourceGroupName "${{ env.sentinelResourceGroup }}" -TemplateFile  $template -workspace "${{ env.workspaceName }}"
+          azPSVersion: "latest"
+
+      # - uses: azure/arm-deploy@v1
+      #   with:
+      #     subscriptionId:    ${{ secrets.AZURE_SUBSCRIPTION }}
+      #     resourceGroupName: ${{ env.sentinelResourceGroup }}
+      #     template:          "./packages/${{ matrix.package }}/template.json"
+      #     parameters:        "workspace=${{ env.workspaceName }}"
