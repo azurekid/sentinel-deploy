@@ -74,8 +74,8 @@ jobs:
       - name: Enumerate files
         id: get-files
         run: | 
-            $files = (Get-ChildItem -path ./packages/${{ matrix.package }} -Include "*.json" -Recurse).FullName | ConvertTo-Json -Compress
-            echo "files=${{ toJSON(files) }}" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8 -Append
+            $files = (Get-ChildItem -path ./packages/${{ matrix.package }} -Include "*.json" -Recurse).FullName
+            echo "files=${{ toJSON($files) }}" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8 -Append
         shell: pwsh
 
       # Log into Azure
