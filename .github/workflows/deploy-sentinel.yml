@@ -62,7 +62,7 @@ jobs:
       - uses: actions/checkout@main
     
       - name: Echo previous outputs
-        run: echo "${{ toJSON(needs.build-and-deploy.outputs.array) }}"
+        run: echo "${{ toJSON(needs.build-and-deploy.outputs.list) }}"
       
       - name: Set Variables
         uses: SecureHats/JsonTo-Variable@v0.0.20
@@ -71,31 +71,31 @@ jobs:
           arraySeparator: ';'
           outputs: $false
       
-      - name: Enumerate files
-        id: get-files
-        run: | 
-            $files = (Get-ChildItem -path ./packages/${{ matrix.package }} -Include "*.json" -Recurse).FullName
-            echo "files=${{ toJSON($files) }}" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8 -Append
-        shell: pwsh
-
       # Log into Azure
       - uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
           enable-AzPSSession: true
 
+      # - name: Enumerate files
+      #   id: get-files
+      #   run: | 
+      #       $files = (Get-ChildItem -path ./packages/${{ matrix.package }} -Include "*.json" -Recurse).FullName | ConvertTo-Json -Compress
+      #       echo "files=${{ toJSON($files) }}" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8 -Append
+      #   shell: pwsh
+
       - name: Run Azure PowerShell script
         uses: azure/powershell@v1
         with:
           inlineScript: |
-            $object = ${{ fromJSON(env.files) }} #| convertfrom-json
-            Write-Output $object
-            # foreach ($file in $object ) {
-            #   Write-Output "show parsed files:" $file
-            # }
-            
-          #  foreach ($template in ${{ fromJSON(env.files) }})
-          #   New-AzResourceGroupDeployment -name "${{ matrix.package }}" -ResourceGroupName "${{ env.sentinelResourceGroup }}" -TemplateFile  $template -workspace "${{ env.workspaceName }}"
+            $files = (Get-ChildItem -path ./packages/${{ matrix.package }} -Include "*.json" -Recurse)            
+            foreach ($template in $files) {
+              New-AzResourceGroupDeployment `
+                -name "${{ matrix.package }}" `
+                -ResourceGroupName "${{ env.sentinelResourceGroup }}" `
+                -TemplateFile  $template `
+                -workspace "${{ env.workspaceName }}"
+            }
           azPSVersion: "latest"
 
       # - uses: azure/arm-deploy@v1
