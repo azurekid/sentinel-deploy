@@ -29,28 +29,28 @@ jobs:
       shell: pwsh
       
       #  Log into Azure
-#     - uses: azure/login@v1
-#       with:
-#         creds: ${{ secrets.AZURE_CREDENTIALS }}
+    - uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
     
-#       # Deploy ARM template
-#     - name: Create Log Analytics workspace
-#       uses: azure/arm-deploy@v1
-#       with:
-#         subscriptionId:    ${{ secrets.AZURE_SUBSCRIPTION }}
-#         resourceGroupName: ${{ env.sentinelResourceGroup }}
-#         template:          "./resources/workspace.bicep"
-#         parameters:        "workspaceName=${{ env.workspaceName }}"
+      # Deploy ARM template
+    - name: Create Log Analytics workspace
+      uses: azure/arm-deploy@v1
+      with:
+        subscriptionId:    ${{ secrets.AZURE_SUBSCRIPTION }}
+        resourceGroupName: ${{ env.sentinelResourceGroup }}
+        template:          "./resources/workspace.bicep"
+        parameters:        "workspaceName=${{ env.workspaceName }}"
     
-#     - name: Enable Microsoft Sentinel
-#       uses: azure/arm-deploy@v1
-#       with:
-#         subscriptionId:    ${{ secrets.AZURE_SUBSCRIPTION }}
-#         resourceGroupName: ${{ env.sentinelResourceGroup }}
-#         template:          "./resources/security-insights.bicep"
-#         parameters:        "workspaceName=${{ env.workspaceName }}"
+    - name: Enable Microsoft Sentinel
+      uses: azure/arm-deploy@v1
+      with:
+        subscriptionId:    ${{ secrets.AZURE_SUBSCRIPTION }}
+        resourceGroupName: ${{ env.sentinelResourceGroup }}
+        template:          "./resources/security-insights.bicep"
+        parameters:        "workspaceName=${{ env.workspaceName }}"
       
-  example_matrix:
+  deploy_analytics:
     strategy:
       matrix:
         package: ${{ fromJSON(needs.build-and-deploy.outputs.list ) }}
@@ -77,14 +77,7 @@ jobs:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
           enable-AzPSSession: true
 
-      # - name: Enumerate files
-      #   id: get-files
-      #   run: | 
-      #       $files = (Get-ChildItem -path ./packages/${{ matrix.package }} -Include "*.json" -Recurse).FullName | ConvertTo-Json -Compress
-      #       echo "files=${{ toJSON($files) }}" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8 -Append
-      #   shell: pwsh
-
-      - name: Run Azure PowerShell script
+      - name: Deploy Analytics
         uses: azure/powershell@v1
         with:
           inlineScript: |
@@ -97,10 +90,3 @@ jobs:
                 -workspace "${{ env.workspaceName }}"
             }
           azPSVersion: "latest"
-
-      # - uses: azure/arm-deploy@v1
-      #   with:
-      #     subscriptionId:    ${{ secrets.AZURE_SUBSCRIPTION }}
-      #     resourceGroupName: ${{ env.sentinelResourceGroup }}
-      #     template:          "./packages/${{ matrix.package }}/template.json"
-      #     parameters:        "workspace=${{ env.workspaceName }}"
