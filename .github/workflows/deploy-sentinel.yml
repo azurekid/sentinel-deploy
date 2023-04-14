@@ -88,10 +88,11 @@ jobs:
         uses: azure/powershell@v1
         with:
           inlineScript: |
-            $object = ${{ (env.files) }} #| convertfrom-json 
-            foreach ($file in $object ) {
-              Write-Output "show parsed files:" $file
-            }
+            $object = ${{ (env.files) }} | convertfrom-json
+            Write-Output $object.count
+            # foreach ($file in $object ) {
+            #   Write-Output "show parsed files:" $file
+            # }
             
           #  foreach ($template in ${{ fromJSON(env.files) }})
           #   New-AzResourceGroupDeployment -name "${{ matrix.package }}" -ResourceGroupName "${{ env.sentinelResourceGroup }}" -TemplateFile  $template -workspace "${{ env.workspaceName }}"
