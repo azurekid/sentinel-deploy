@@ -88,8 +88,8 @@ jobs:
         uses: azure/powershell@v1
         with:
           inlineScript: |
-            $object = ${{ (env.files) }} | convertfrom-json
-            Write-Output $object.count
+            $object = ${{ (env.files) }} #| convertfrom-json
+            Write-Output $object
             # foreach ($file in $object ) {
             #   Write-Output "show parsed files:" $file
             # }
