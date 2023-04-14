@@ -88,7 +88,8 @@ jobs:
         uses: azure/powershell@v1
         with:
           inlineScript: |
-            foreach ($file in ${{ fromJson(env.files) }} ) {
+          $object = ${{ (env.files) }} | convertfrom-json 
+            foreach ($file in $object ) {
               Write-Output "show parsed files:" $file
             }
             
