@@ -28,27 +28,27 @@ jobs:
           echo "::set-output name=list::$arrayList"
       shell: pwsh
       
-      #  Log into Azure
-    - uses: azure/login@v1
-      with:
-        creds: ${{ secrets.AZURE_CREDENTIALS }}
+#       #  Log into Azure
+#     - uses: azure/login@v1
+#       with:
+#         creds: ${{ secrets.AZURE_CREDENTIALS }}
     
-      # Deploy ARM template
-    - name: Create Log Analytics workspace
-      uses: azure/arm-deploy@v1
-      with:
-        subscriptionId:    ${{ secrets.AZURE_SUBSCRIPTION }}
-        resourceGroupName: ${{ env.sentinelResourceGroup }}
-        template:          "./resources/workspace.bicep"
-        parameters:        "workspaceName=${{ env.workspaceName }}"
+#       # Deploy ARM template
+#     - name: Create Log Analytics workspace
+#       uses: azure/arm-deploy@v1
+#       with:
+#         subscriptionId:    ${{ secrets.AZURE_SUBSCRIPTION }}
+#         resourceGroupName: ${{ env.sentinelResourceGroup }}
+#         template:          "./resources/workspace.bicep"
+#         parameters:        "workspaceName=${{ env.workspaceName }}"
     
-    - name: Enable Microsoft Sentinel
-      uses: azure/arm-deploy@v1
-      with:
-        subscriptionId:    ${{ secrets.AZURE_SUBSCRIPTION }}
-        resourceGroupName: ${{ env.sentinelResourceGroup }}
-        template:          "./resources/security-insights.bicep"
-        parameters:        "workspaceName=${{ env.workspaceName }}"
+#     - name: Enable Microsoft Sentinel
+#       uses: azure/arm-deploy@v1
+#       with:
+#         subscriptionId:    ${{ secrets.AZURE_SUBSCRIPTION }}
+#         resourceGroupName: ${{ env.sentinelResourceGroup }}
+#         template:          "./resources/security-insights.bicep"
+#         parameters:        "workspaceName=${{ env.workspaceName }}"
       
   deploy_analytics:
     strategy:
@@ -78,7 +78,7 @@ jobs:
           enable-AzPSSession: true
 
       - name: Convert Template files
-        uses: SecureHats/YamlTo-Arm@v0.0.7
+        uses: SecureHats/YamlTo-Arm@v0.0.8
         with:
           filesPath: ./packages/${{ matrix.package }}
           outputPath: ./packages/${{ matrix.package }}
