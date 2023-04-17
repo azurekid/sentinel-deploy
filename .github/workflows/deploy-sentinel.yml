@@ -78,10 +78,11 @@ jobs:
           enable-AzPSSession: true
 
       - name: SecureHats template
-        uses: SecureHats/YamlTo-Arm@v0.0.1
+        uses: SecureHats/YamlTo-Arm@v0.0.4
         with:
           filesPath: ./packages/${{ matrix.package }}
           outputPath: ./packages/${{ matrix.package }}
+          debug: true
           
       - name: Deploy Analytics
         uses: azure/powershell@v1
