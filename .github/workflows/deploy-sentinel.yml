@@ -78,7 +78,7 @@ jobs:
           enable-AzPSSession: true
 
       - name: SecureHats template
-        uses: SecureHats/YamlTo-Arm@v0.0.6=7
+        uses: SecureHats/YamlTo-Arm@v0.0.7
         with:
           filesPath: ./packages/${{ matrix.package }}
           outputPath: ./packages/${{ matrix.package }}
