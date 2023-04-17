@@ -77,11 +77,17 @@ jobs:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
           enable-AzPSSession: true
 
+      - name: SecureHats template
+        uses: SecureHats/YamlTo-Arm@v0.0.1
+        with:
+          filesPath: ./packages/${{ matrix.package }}
+          outputPath: ./packages/${{ matrix.package }}
+          
       - name: Deploy Analytics
         uses: azure/powershell@v1
         with:
           inlineScript: |
-            $files = (Get-ChildItem -path ./packages/${{ matrix.package }} -Include "*.json" -Recurse)            
+            $files = (Get-ChildItem -path ./packages/${{ matrix.package }} -Include "deployment.json" -Recurse)            
             foreach ($template in $files) {
               New-AzResourceGroupDeployment `
                 -name "${{ matrix.package }}" `
