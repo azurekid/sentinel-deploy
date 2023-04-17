@@ -82,7 +82,7 @@ jobs:
         with:
           filesPath: ./packages/${{ matrix.package }}
           outputPath: ./packages/${{ matrix.package }}
-          debug: true
+          debug: $true
           
       - name: Deploy Analytics
         uses: azure/powershell@v1
