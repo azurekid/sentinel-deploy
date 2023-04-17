@@ -1,7 +1,7 @@
 id: 0adab960-5565-4978-ba6d-044553e4acc4
 name: Successful API executed from a Tor exit node
 description: |
-  'A successful API execution was detected from an IP address categorized as a TOR exit node by Threat Intelligence.'
+  'A successful API execution was detected from an IP address categorized as a TOR exit node by Threat Intelligence'
 severity: High
 status: Available
 requiredDataConnectors:
