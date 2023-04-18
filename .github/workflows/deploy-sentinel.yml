@@ -88,7 +88,7 @@ jobs:
         uses: azure/powershell@v1
         with:
           inlineScript: |
-            $files = (Get-ChildItem -path ./packages/${{ matrix.package }} -Include "deployment.json" -Recurse)            
+            $files = (Get-ChildItem -path ./packages/${{ matrix.package }} -Include "*.json" -Recurse)            
             write-output "files found: $($files.count)"
             Get-ChildItem -path ./packages/${{ matrix.package }} -Include "*.json" -Recurse
             foreach ($template in $files) {
