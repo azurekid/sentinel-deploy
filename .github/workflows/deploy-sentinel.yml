@@ -94,7 +94,7 @@ jobs:
               New-AzResourceGroupDeployment `
                 -name "${{ matrix.package }}" `
                 -ResourceGroupName "${{ env.sentinelResourceGroup }}" `
-                -TemplateFile  'deployment.json' `
+                -TemplateFile  deployment.json `
                 -workspace "${{ env.workspaceName }}"
             }
           azPSVersion: "latest"
