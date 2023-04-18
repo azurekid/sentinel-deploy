@@ -90,6 +90,7 @@ jobs:
           inlineScript: |
             $files = (Get-ChildItem -path ./packages/${{ matrix.package }} -Include "deployment.json" -Recurse)            
             write-output "files found: $($files.count)"
+            Get-ChildItem -path ./packages/${{ matrix.package }} -Include "*.json" -Recurse
             foreach ($template in $files) {
               New-AzResourceGroupDeployment `
                 -name "${{ matrix.package }}" `
