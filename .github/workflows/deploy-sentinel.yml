@@ -89,11 +89,12 @@ jobs:
         with:
           inlineScript: |
             $files = (Get-ChildItem -path ./packages/${{ matrix.package }} -Include "deployment.json" -Recurse)            
+            write-output "files found: $($files.count)"
             foreach ($template in $files) {
               New-AzResourceGroupDeployment `
                 -name "${{ matrix.package }}" `
                 -ResourceGroupName "${{ env.sentinelResourceGroup }}" `
-                -TemplateFile  $template `
+                -TemplateFile  'deployment.json' `
                 -workspace "${{ env.workspaceName }}"
             }
           azPSVersion: "latest"
