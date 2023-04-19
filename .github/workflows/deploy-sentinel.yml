@@ -93,10 +93,11 @@ jobs:
             write-output "files found: $($files.count)"
             Get-ChildItem -path ./packages/${{ matrix.package }} -Include "*.json" -Recurse
             foreach ($template in $files) {
+            Write-Output "file is: $($template.FullName)"
               New-AzResourceGroupDeployment `
                 -name "${{ matrix.package }}" `
                 -ResourceGroupName "${{ env.sentinelResourceGroup }}" `
-                -TemplateFile  deployment.json `
+                -TemplateFile  template.FullName `
                 -workspace "${{ env.workspaceName }}"
             }
           azPSVersion: "latest"
