@@ -82,6 +82,7 @@ jobs:
         with:
           filesPath: ./packages/${{ matrix.package }}
           outputPath: ./packages/${{ matrix.package }}
+          singleFile: $true
           debugging: $true
           
       - name: Deploy Analytics
