@@ -94,10 +94,11 @@ jobs:
             Get-ChildItem -path ./packages/${{ matrix.package }} -Include "*.json" -Recurse
             foreach ($template in $files) {
             Write-Output "file is: $($template.FullName)"
-              New-AzResourceGroupDeployment `
-                -name "${{ matrix.package }}" `
-                -ResourceGroupName "${{ env.sentinelResourceGroup }}" `
-                -TemplateFile  template.FullName `
-                -workspace "${{ env.workspaceName }}"
-            }
+              $deploymentHash = @{
+                "name"              = "${{ matrix.package }}"
+                "resourceGroupName" = "${{ env.sentinelResourceGroup }}"
+                "workspace"         = "${{ env.workspaceName }}"
+                "templateFile"      = "$($template.FullName)"
+              }
+              New-AzResourceGroupDeployment @deploymentHash
           azPSVersion: "latest"
