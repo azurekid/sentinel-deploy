@@ -101,4 +101,5 @@ jobs:
                 "templateFile"      = "$($template.FullName)"
               }
               New-AzResourceGroupDeployment @deploymentHash
+            }
           azPSVersion: "latest"
