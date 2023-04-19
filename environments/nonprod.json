@@ -6,6 +6,6 @@
   "solutionsPath": "packages",
   "customerSolutions": [
     'azure-ad',
-    'azure-firewall'
+    'keyvault'
   ]
 }
