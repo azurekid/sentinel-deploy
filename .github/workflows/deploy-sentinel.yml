@@ -78,7 +78,7 @@ jobs:
           enable-AzPSSession: true
 
       - name: Convert Template files
-        uses: SecureHats/YamlTo-Arm@v0.1.0
+        uses: SecureHats/YamlTo-Arm@v0.1.1
         with:
           filesPath: ./packages/${{ matrix.package }}
           outputPath: ./packages/${{ matrix.package }}
