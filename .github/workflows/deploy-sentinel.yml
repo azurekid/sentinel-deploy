@@ -70,7 +70,13 @@ jobs:
           filePath: './environments/nonprod.json'
           arraySeparator: ';'
           outputs: $false
-      
+
+      - name: Validate Sentinel Analytics Rules
+        uses: SecureHats/validate-detections@v1.1
+        with:
+          filesPath: ./packages/${{ matrix.package }}
+          logLevel: Minimal
+          
       - name: Convert Template files
         uses: SecureHats/YamlTo-Arm@v0.1.7
         with:
