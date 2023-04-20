@@ -72,7 +72,7 @@ jobs:
           outputs: $false
       
       - name: Convert Template files
-        uses: SecureHats/YamlTo-Arm@v0.1.6
+        uses: SecureHats/YamlTo-Arm@v0.1.7
         with:
           filesPath: ./packages/${{ matrix.package }}
           outputPath: ./packages/${{ matrix.package }}
