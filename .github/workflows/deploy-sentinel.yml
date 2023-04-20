@@ -82,24 +82,31 @@ jobs:
         with:
           filesPath: ./packages/${{ matrix.package }}
           outputPath: ./packages/${{ matrix.package }}
-          singleFile: $false
+          singleFile: $true
           debugging: $false
           
       - name: Deploy Analytics
-        uses: azure/powershell@v1
+        uses: azure/arm-deploy@v1
         with:
-          inlineScript: |
-            $files = (Get-ChildItem -path ./packages/${{ matrix.package }} -Include "*.json" -Recurse)            
-            write-output "files found: $($files.count)"
-            Get-ChildItem -path ./packages/${{ matrix.package }} -Include "*.json" -Recurse
-            foreach ($template in $files) {
-            Write-Output "file is: $($template.FullName)"
-              $deploymentHash = @{
-                "name"              = "${{ matrix.package }}"
-                "resourceGroupName" = "${{ env.sentinelResourceGroup }}"
-                "workspace"         = "${{ env.workspaceName }}"
-                "templateFile"      = "$($template.FullName)"
-              }
-              New-AzResourceGroupDeployment @deploymentHash
-            }
-          azPSVersion: "latest"
+          subscriptionId:    ${{ secrets.AZURE_SUBSCRIPTION }}
+          resourceGroupName: ${{ env.sentinelResourceGroup }}
+          template:          "./packages/${{ matrix.package }}/deployment.json"
+          parameters:        "workspace=${{ env.workspaceName }}"
+        
+        # uses: azure/powershell@v1
+        # with:
+        #   inlineScript: |
+        #     $files = (Get-ChildItem -path ./packages/${{ matrix.package }} -Include "*.json" -Recurse)            
+        #     write-output "files found: $($files.count)"
+        #     Get-ChildItem -path ./packages/${{ matrix.package }} -Include "*.json" -Recurse
+        #     foreach ($template in $files) {
+        #     Write-Output "file is: $($template.FullName)"
+        #       $deploymentHash = @{
+        #         "name"              = "${{ matrix.package }}"
+        #         "resourceGroupName" = "${{ env.sentinelResourceGroup }}"
+        #         "workspace"         = "${{ env.workspaceName }}"
+        #         "templateFile"      = "$($template.FullName)"
+        #       }
+        #       New-AzResourceGroupDeployment @deploymentHash
+        #     }
+        #   azPSVersion: "latest"
