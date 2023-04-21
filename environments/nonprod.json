@@ -1,11 +1,11 @@
 {
-  "workspaceName": "rdk-dev-github-workspace",
+  "workspaceName": "rdk-github-workspace",
   "subscriptionId": "dd07ba65-eaa4-416d-b492-bd8cde619247",
   "serviceConnection": "Visual Studio Enterprise Subscription – MPN",
-  "sentinelResourceGroup": "329ce62c-c677-4f9c-9266-0dcefa7eac1e-rg",
+  "sentinelResourceGroup": "rdk-github-rg",
   "solutionsPath": "packages",
   "customerSolutions": [
     'azure-ad',
     'keyvault'
   ]
-} 
+}
