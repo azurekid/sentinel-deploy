@@ -1,5 +1,8 @@
 name: Analytics
-on: workflow_dispatch
+on:
+  push:
+    paths:
+      - 'packages/**' 
 
 jobs:
   pester-test:

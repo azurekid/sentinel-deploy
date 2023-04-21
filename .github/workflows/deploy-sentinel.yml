@@ -1,5 +1,8 @@
 name: Build and Publish Sentinel Solutions
-on: [push, workflow_dispatch]
+on:
+  push:
+    paths:
+      - 'environments/**'
 jobs:        
   build-and-deploy:
     runs-on: ubuntu-latest
