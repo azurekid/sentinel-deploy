@@ -4,6 +4,7 @@
   "serviceConnection": "Visual Studio Enterprise Subscription – MPN",
   "sentinelResourceGroup": "rdk-github-rg",
   "solutionsPath": "packages",
+  "location": "westeurope",
   "customerSolutions": [
     'azure-ad',
     'keyvault'

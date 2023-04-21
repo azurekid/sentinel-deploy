@@ -7,10 +7,11 @@ jobs:
   set-variables:
     runs-on: ubuntu-latest
     outputs:
-      customerSolutions: ${{ env.customerSolutions }}
+      customerSolutions:     ${{ env.customerSolutions }}
       sentinelResourceGroup: ${{ env.sentinelResourceGroup }}
-      workspaceName: ${{ env.workspaceName }}
-      list: ${{ steps.array.outputs.list }}
+      workspaceName:         ${{ env.workspaceName }}
+      location:              ${{ env.location }}
+      list:                  ${{ steps.array.outputs.list }}
     steps:
       # Checkout code
     - uses: actions/checkout@main
@@ -20,9 +21,9 @@ jobs:
       uses: SecureHats/JsonTo-Variable@v0.0.20
       id: build-variable
       with:
-        filePath: './environments/nonprod.json'
+        filePath:       './environments/nonprod.json'
         arraySeparator: ';'
-        outputs: $true
+        outputs:        $true
       
     - name: Create Json Array
       id: array
@@ -45,6 +46,14 @@ jobs:
     - uses: actions/checkout@main
 
       # Deploy ARM template
+    - name: Create Resource Group
+      uses: azure/arm-deploy@v1
+      with:
+        subscriptionId:    ${{ secrets.AZURE_SUBSCRIPTION }}
+        scope:             'subscription'
+        template:          "./resources/resourcegroup.bicep"
+        parameters:        "resourceGroupName=${{ needs.set-variables.outputs.sentinelResourceGroup }}, location=${{ needs.set-variables.outputs.location }}"
+    
     - name: Create Log Analytics workspace
       uses: azure/arm-deploy@v1
       with:
@@ -77,7 +86,7 @@ jobs:
       - name: Convert Template files
         uses: SecureHats/YamlTo-Arm@v0.1.7
         with:
-          filesPath: ./packages/${{ matrix.package }}
+          filesPath:  ./packages/${{ matrix.package }}
           outputPath: ./packages/${{ matrix.package }}
           
       # Log into Azure
