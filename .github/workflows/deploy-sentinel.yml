@@ -19,7 +19,7 @@ jobs:
       # Load variables
     - name: Set Variables
       uses: SecureHats/JsonTo-Variable@v0.0.20
-      id: step1
+      id: build-variable
       with:
         filePath: './environments/nonprod.json'
         arraySeparator: ';'
@@ -33,10 +33,7 @@ jobs:
           echo "list=$arrayList" >> $env:GITHUB_OUTPUT
       shell: pwsh
  
-  build-and-deploy:
       #  Log into Azure
-    runs-on: ubuntu-latest
-    needs: set-variables
     - uses: azure/login@v1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
@@ -63,7 +60,7 @@ jobs:
       matrix:
         package: ${{ fromJSON(needs.set-variables.outputs.list ) }}
     runs-on: ubuntu-latest
-    needs: build-and-deploy
+    needs: set-variables
       
     steps:
       # Checkout code
