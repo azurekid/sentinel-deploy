@@ -28,8 +28,8 @@ jobs:
       run: |
           $arrayList = "${{ env.customerSolutions }}" -split ';' | ConvertTo-Json -Compress
           echo $arrayList
-          #echo "list=$arrayList" >> $GITHUB_OUTPUT
-          echo "::set-output name=list::$arrayList"
+          echo "list=$arrayList" >> $env:GITHUB_OUTPUT
+          #echo "::set-output name=list::$arrayList"
       shell: pwsh
       
       #  Log into Azure
