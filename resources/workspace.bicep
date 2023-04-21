@@ -41,7 +41,7 @@ resource workspaceName_subscriptionId 'Microsoft.OperationalInsights/workspaces/
   name: replace(subscription().subscriptionId, '-', '')
   kind: 'AzureActivityLog'
   properties: {
-    linkedResourceId: resourceId
+    resourceid: resourceId
   }
 }
 
