@@ -51,7 +51,7 @@ jobs:
         subscriptionId:    ${{ secrets.AZURE_SUBSCRIPTION }}
         resourceGroupName: "${{ needs.set-variables.outputs.sentinelResourceGroup }}"
         template:          "./resources/workspace.bicep"
-        parameters:        "workspace=${{ needs.set-variables.outputs.workspaceName }}"
+        parameters:        "workspaceName=${{ needs.set-variables.outputs.workspaceName }}"
     
     - name: Enable Microsoft Sentinel
       uses: azure/arm-deploy@v1
@@ -59,7 +59,7 @@ jobs:
         subscriptionId:    ${{ secrets.AZURE_SUBSCRIPTION }}
         resourceGroupName: "${{ needs.set-variables.outputs.sentinelResourceGroup }}"
         template:          "./resources/security-insights.bicep"
-        parameters:        "workspace=${{ needs.set-variables.outputs.workspaceName }}"
+        parameters:        "workspaceName=${{ needs.set-variables.outputs.workspaceName }}"
       
   deploy_analytics:
     strategy:
