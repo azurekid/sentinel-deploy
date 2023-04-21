@@ -37,6 +37,9 @@ jobs:
     needs: set-variables
       #  Log into Azure
     steps:
+    # Checkout code
+    - uses: actions/checkout@main
+
     - uses: azure/login@v1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
