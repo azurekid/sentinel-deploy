@@ -1,5 +1,3 @@
-targetScope = 'subscription'    // Resource group must be deployed under 'subscription' scope
-
 param resourceGroupName string
 param location string
 
