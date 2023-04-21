@@ -33,7 +33,7 @@ jobs:
           echo "list=$arrayList" >> $env:GITHUB_OUTPUT
       shell: pwsh
       
-  build-and-deploy
+  build-and-deploy:
     needs: set-variables
       #  Log into Azure
     - uses: azure/login@v1
