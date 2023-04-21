@@ -10,7 +10,7 @@ jobs:
       customerSolutions: ${{ env.customerSolutions }}
       list: ${{ steps.step2.outputs.list }}
       sentinelResourceGroup: ${{ env.sentinelResourceGroup }}
-      workspaceName: ${{ steps.step1.outputs.workspaceName }}
+      workspaceName: ${{ env.workspaceName }}
     steps:
 
       # Checkout code
