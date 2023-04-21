@@ -82,6 +82,6 @@ jobs:
         uses: azure/arm-deploy@v1
         with:
           subscriptionId:    ${{ secrets.AZURE_SUBSCRIPTION }}
-          resourceGroupName: "${{ needs.set-variables.outputs.sentinelResourceGroup }}" # ${{ env.sentinelResourceGroup }}
+          resourceGroupName: "${{ needs.set-variables.outputs.sentinelResourceGroup }}"
           template:          "./packages/${{ matrix.package }}/deployment.json"
-          parameters:        "${{ needs.set-variables.outputs.workspaceName }}" #"workspace=${{ env.workspaceName }}"
+          parameters:        "workspace=${{ needs.set-variables.outputs.workspaceName }}"
