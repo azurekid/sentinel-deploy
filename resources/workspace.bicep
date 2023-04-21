@@ -20,7 +20,6 @@ resource workspace 'Microsoft.OperationalInsights/workspaces@2015-11-01-preview'
   }
 }
 
-var resourceId = 'subscriptionResourceId(microsoft.insights/eventtypes/management)'
 
 resource SecurityInsights 'Microsoft.OperationsManagement/solutions@2015-11-01-preview' = {
   name: 'SecurityInsights(${workspaceName})'
@@ -33,15 +32,6 @@ resource SecurityInsights 'Microsoft.OperationsManagement/solutions@2015-11-01-p
   }
   properties: {
     workspaceResourceId: workspace.id
-  }
-}
-
-resource workspaceName_subscriptionId 'Microsoft.OperationalInsights/workspaces/dataSources@2020-03-01-preview' = {
-  parent: workspace
-  name: replace(subscription().subscriptionId, '-', '')
-  kind: 'AzureActivityLog'
-  properties: {
-    linkedResourceId: resourceId
   }
 }
 
