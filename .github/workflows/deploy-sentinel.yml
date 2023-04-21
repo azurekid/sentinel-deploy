@@ -51,6 +51,7 @@ jobs:
       with:
         subscriptionId:    ${{ secrets.AZURE_SUBSCRIPTION }}
         scope:             'subscription'
+        region:            'westeurope'
         template:          "./resources/resourcegroup.bicep"
         parameters:        "resourceGroupName=${{ needs.set-variables.outputs.sentinelResourceGroup }}, location=${{ needs.set-variables.outputs.location }}"
     
