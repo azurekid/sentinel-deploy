@@ -1,5 +1,5 @@
 name: Build and Publish Sentinel Solutions
-on: [push]
+on: [push, workflow_dispatch]
 jobs:        
   build-and-deploy:
     runs-on: ubuntu-latest
@@ -25,7 +25,8 @@ jobs:
       run: |
           $arrayList = "${{ env.customerSolutions }}" -split ';' | ConvertTo-Json -Compress
           echo $arrayList
-          echo "::set-output name=list::$arrayList"
+          echo "list=$arrayList" >> $GITHUB_OUTPUT
+          # echo "::set-output name=list::$arrayList"
       shell: pwsh
       
       #  Log into Azure
@@ -61,8 +62,8 @@ jobs:
       # Checkout code
       - uses: actions/checkout@main
     
-      - name: Echo previous outputs
-        run: echo "${{ toJSON(needs.build-and-deploy.outputs.list) }}"
+      # - name: Echo previous outputs
+      #   run: echo "${{ toJSON(needs.build-and-deploy.outputs.list) }}"
       
       - name: Set Variables
         uses: SecureHats/JsonTo-Variable@v0.0.20
@@ -70,12 +71,6 @@ jobs:
           filePath: './environments/nonprod.json'
           arraySeparator: ';'
           outputs: $false
-
-#       - name: Validate Sentinel Analytics Rules
-#         uses: SecureHats/validate-detections@v1.1
-#         with:
-#           filesPath: ./packages/${{ matrix.package }}
-#           logLevel: Minimal
           
       - name: Convert Template files
         uses: SecureHats/YamlTo-Arm@v0.1.7
@@ -97,21 +92,3 @@ jobs:
           resourceGroupName: ${{ env.sentinelResourceGroup }}
           template:          "./packages/${{ matrix.package }}/deployment.json"
           parameters:        "workspace=${{ env.workspaceName }}"
-        
-#         uses: azure/powershell@v1
-#         with:
-#           inlineScript: |
-#             $files = (Get-ChildItem -path ./packages/${{ matrix.package }} -Include "*.json" -Recurse)            
-#             write-output "files found: $($files.count)"
-#             Get-ChildItem -path ./packages/${{ matrix.package }} -Include "*.json" -Recurse
-#             foreach ($template in $files) {
-#             Write-Output "file is: $($template.FullName)"
-#               $deploymentHash = @{
-#                 "name"              = "${{ matrix.package }}"
-#                 "resourceGroupName" = "${{ env.sentinelResourceGroup }}"
-#                 "workspace"         = "${{ env.workspaceName }}"
-#                 "templateFile"      = "$($template.FullName)"
-#               }
-#               New-AzResourceGroupDeployment @deploymentHash
-#             }
-#           azPSVersion: "latest"
