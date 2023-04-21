@@ -93,6 +93,6 @@ jobs:
         uses: azure/arm-deploy@v1
         with:
           subscriptionId:    ${{ secrets.AZURE_SUBSCRIPTION }}
-          resourceGroupName: ${{ fromJSON(needs.build-and-deploy.outputs.sentinelResourceGroup ) }} # ${{ env.sentinelResourceGroup }}
+          resourceGroupName: ${{ needs.build-and-deploy.outputs.sentinelResourceGroup }} # ${{ env.sentinelResourceGroup }}
           template:          "./packages/${{ matrix.package }}/deployment.json"
-          parameters:        ${{ fromJSON(needs.build-and-deploy.outputs.workspaceName ) }} #"workspace=${{ env.workspaceName }}"
+          parameters:        ${{ needs.build-and-deploy.outputs.workspaceName }} #"workspace=${{ env.workspaceName }}"
