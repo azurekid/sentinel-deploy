@@ -4,13 +4,13 @@ on:
     paths:
       - 'environments/**'
 jobs:        
-  build-and-deploy:
+  set-variables:
     runs-on: ubuntu-latest
     outputs:
       customerSolutions: ${{ env.customerSolutions }}
-      list: ${{ steps.step2.outputs.list }}
       sentinelResourceGroup: ${{ env.sentinelResourceGroup }}
       workspaceName: ${{ env.workspaceName }}
+      list: ${{ steps.array.outputs.list }}
     steps:
 
       # Checkout code
@@ -26,13 +26,15 @@ jobs:
         outputs: $true
       
     - name: Create Json Array
-      id: step2
+      id: array
       run: |
           $arrayList = "${{ env.customerSolutions }}" -split ';' | ConvertTo-Json -Compress
           echo $arrayList
           echo "list=$arrayList" >> $env:GITHUB_OUTPUT
       shell: pwsh
       
+  build-and-deploy
+    needs: set-variables
       #  Log into Azure
     - uses: azure/login@v1
       with:
@@ -58,30 +60,19 @@ jobs:
   deploy_analytics:
     strategy:
       matrix:
-        package: ${{ fromJSON(needs.build-and-deploy.outputs.list ) }}
+        package: ${{ fromJSON(needs.set-variables.outputs.list ) }}
     runs-on: ubuntu-latest
     needs: build-and-deploy
       
     steps:
       # Checkout code
       - uses: actions/checkout@main
-    
-      # - name: Echo previous outputs
-      #   run: echo "${{ toJSON(needs.build-and-deploy.outputs.list) }}"
-      
-      # - name: Set Variables
-      #   uses: SecureHats/JsonTo-Variable@v0.0.20
-      #   with:
-      #     filePath: './environments/nonprod.json'
-      #     arraySeparator: ';'
-      #     outputs: $false
           
       - name: Convert Template files
         uses: SecureHats/YamlTo-Arm@v0.1.7
         with:
           filesPath: ./packages/${{ matrix.package }}
           outputPath: ./packages/${{ matrix.package }}
-#           singleFile: $true
           
       # Log into Azure
       - uses: azure/login@v1
@@ -93,6 +84,6 @@ jobs:
         uses: azure/arm-deploy@v1
         with:
           subscriptionId:    ${{ secrets.AZURE_SUBSCRIPTION }}
-          resourceGroupName: ${{ needs.build-and-deploy.outputs.sentinelResourceGroup }} # ${{ env.sentinelResourceGroup }}
+          resourceGroupName: "${{ needs.set-variables.outputs.sentinelResourceGroup }}" # ${{ env.sentinelResourceGroup }}
           template:          "./packages/${{ matrix.package }}/deployment.json"
-          parameters:        ${{ needs.build-and-deploy.outputs.workspaceName }} #"workspace=${{ env.workspaceName }}"
+          parameters:        "${{ needs.set-variables.outputs.workspaceName }}" #"workspace=${{ env.workspaceName }}"
