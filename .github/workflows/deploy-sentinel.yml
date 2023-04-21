@@ -35,6 +35,7 @@ jobs:
   deploy-infrastructure:
     runs-on: ubuntu-latest
       #  Log into Azure
+    steps:
     - uses: azure/login@v1
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
@@ -64,25 +65,25 @@ jobs:
     needs: deploy-infrastructure
       
     steps:
-      # Checkout code
-      - uses: actions/checkout@main
-          
-      - name: Convert Template files
-        uses: SecureHats/YamlTo-Arm@v0.1.7
-        with:
-          filesPath: ./packages/${{ matrix.package }}
-          outputPath: ./packages/${{ matrix.package }}
-          
-      # Log into Azure
-      - uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+    # Checkout code
+    - uses: actions/checkout@main
+        
+    - name: Convert Template files
+      uses: SecureHats/YamlTo-Arm@v0.1.7
+      with:
+        filesPath: ./packages/${{ matrix.package }}
+        outputPath: ./packages/${{ matrix.package }}
+        
+    # Log into Azure
+    - uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
 #           enable-AzPSSession: true
-          
-      - name: Deploy Analytics
-        uses: azure/arm-deploy@v1
-        with:
-          subscriptionId:    ${{ secrets.AZURE_SUBSCRIPTION }}
-          resourceGroupName: "${{ needs.set-variables.outputs.sentinelResourceGroup }}"
-          template:          "./packages/${{ matrix.package }}/deployment.json"
-          parameters:        "workspace=${{ needs.set-variables.outputs.workspaceName }}"
+        
+    - name: Deploy Analytics
+      uses: azure/arm-deploy@v1
+      with:
+        subscriptionId:    ${{ secrets.AZURE_SUBSCRIPTION }}
+        resourceGroupName: "${{ needs.set-variables.outputs.sentinelResourceGroup }}"
+        template:          "./packages/${{ matrix.package }}/deployment.json"
+        parameters:        "workspace=${{ needs.set-variables.outputs.workspaceName }}"
