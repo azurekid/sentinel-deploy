@@ -7,4 +7,4 @@ sentinelResourceGroup=329ce62c-c677-4f9c-9266-0dcefa7eac1e-rg
   
 # Solutions
 solutionsPath=packages
-# customerSolutions=["azure-ad","keyvault"]
+# customerSolutions=["azure-ad","keyvault"] 
