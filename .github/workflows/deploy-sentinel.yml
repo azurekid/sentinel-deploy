@@ -41,6 +41,9 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
     
+      # Checkout code
+    - uses: actions/checkout@main
+    
       # Deploy ARM template
     - name: Create Log Analytics workspace
       uses: azure/arm-deploy@v1
