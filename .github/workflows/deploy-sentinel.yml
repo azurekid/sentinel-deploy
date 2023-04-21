@@ -12,7 +12,6 @@ jobs:
       workspaceName: ${{ env.workspaceName }}
       list: ${{ steps.array.outputs.list }}
     steps:
-
       # Checkout code
     - uses: actions/checkout@main
       
@@ -32,7 +31,10 @@ jobs:
           echo $arrayList
           echo "list=$arrayList" >> $env:GITHUB_OUTPUT
       shell: pwsh
- 
+
+  deploy-infrastructure:
+    runs-on: ubuntu-latest
+    needs: set-variables
       #  Log into Azure
     - uses: azure/login@v1
       with:
@@ -43,24 +45,24 @@ jobs:
       uses: azure/arm-deploy@v1
       with:
         subscriptionId:    ${{ secrets.AZURE_SUBSCRIPTION }}
-        resourceGroupName: ${{ env.sentinelResourceGroup }}
+        resourceGroupName: "${{ needs.set-variables.outputs.sentinelResourceGroup }}"
         template:          "./resources/workspace.bicep"
-        parameters:        "workspaceName=${{ env.workspaceName }}"
+        parameters:        "workspace=${{ needs.set-variables.outputs.workspaceName }}"
     
     - name: Enable Microsoft Sentinel
       uses: azure/arm-deploy@v1
       with:
         subscriptionId:    ${{ secrets.AZURE_SUBSCRIPTION }}
-        resourceGroupName: ${{ env.sentinelResourceGroup }}
+        resourceGroupName: "${{ needs.set-variables.outputs.sentinelResourceGroup }}"
         template:          "./resources/security-insights.bicep"
-        parameters:        "workspaceName=${{ env.workspaceName }}"
+        parameters:        "workspace=${{ needs.set-variables.outputs.workspaceName }}"
       
   deploy_analytics:
     strategy:
       matrix:
         package: ${{ fromJSON(needs.set-variables.outputs.list ) }}
     runs-on: ubuntu-latest
-    needs: set-variables
+    needs: deploy-infrastructure
       
     steps:
       # Checkout code
