@@ -9,7 +9,7 @@ jobs:
     outputs:
       customerSolutions: ${{ env.customerSolutions }}
       list: ${{ steps.step2.outputs.list }}
-      sentinelResourceGroup: ${{ steps.step1.outputs.sentinelResourceGroup }}
+      sentinelResourceGroup: ${{ env.sentinelResourceGroup }}
       workspaceName: ${{ steps.step1.outputs.workspaceName }}
     steps:
 
