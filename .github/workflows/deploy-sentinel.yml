@@ -51,9 +51,9 @@ jobs:
       with:
         subscriptionId:    ${{ secrets.AZURE_SUBSCRIPTION }}
         scope:             'subscription'
-        region:            'westeurope'
+        region:            ${{ needs.set-variables.outputs.location }}
         template:          "./resources/resourcegroup.bicep"
-        parameters:        "resourceGroupName=${{ needs.set-variables.outputs.sentinelResourceGroup }} location=${{ needs.set-variables.outputs.location }}"
+        parameters:        "resourceGroupName=${{ needs.set-variables.outputs.sentinelResourceGroup }}"
     
     - name: Create Log Analytics workspace
       uses: azure/arm-deploy@v1
