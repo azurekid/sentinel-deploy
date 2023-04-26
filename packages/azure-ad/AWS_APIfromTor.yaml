@@ -24,7 +24,8 @@ query: |
     AWSCloudTrail
     | where SourceIpAddress in (TorNodes) and isempty(ErrorCode) and isempty(ErrorMessage)
     | extend UserIdentityUserName = iff(isnotempty(UserIdentityUserName), UserIdentityUserName, tostring(split(UserIdentityArn,'/')[-1]))
-    | extend timestamp = TimeGenerated, IPCustomEntity = SourceIpAddress, AccountCustomEntity = UserIdentityUserName 
+    | extend timestamp = TimeGenerated, IPCustomEntity = SourceIpAddress, AccountCustomEntity = UserIdentityUserName
+    | pack (AdditionalFields)
 entityMappings:
   - entityType: Account
     fieldMappings:
