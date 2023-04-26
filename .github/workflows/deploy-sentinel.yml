@@ -2,7 +2,7 @@ name: Build and Publish Sentinel Solutions
 on:
   push:
     paths:
-      - 'workflows/**'
+      - '.github/workflows/**'
 jobs:        
   set-variables:
     runs-on: ubuntu-latest
