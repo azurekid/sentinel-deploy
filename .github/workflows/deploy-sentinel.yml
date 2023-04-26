@@ -84,6 +84,12 @@ jobs:
       # Checkout code
       - uses: actions/checkout@main
           
+      - name: Validate Deprecated KQL values
+        uses: SecureHats/kusto-alias@v0.1.0-alpha
+        with:
+          filesPath: ./packages/${{ matrix.package }}
+          logLevel: Minimal
+          
       - name: Convert Template files
         uses: SecureHats/YamlTo-Arm@v0.1.7
         with:
