@@ -43,7 +43,7 @@ jobs:
 #         creds: ${{ secrets.AZURE_CREDENTIALS }}
     
 #       # Checkout code
-#     - uses: actions/checkout@main
+    - uses: actions/checkout@main
 
 #       # Deploy ARM template
 #     - name: Create Resource Group
