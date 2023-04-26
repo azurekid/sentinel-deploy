@@ -85,7 +85,7 @@ jobs:
       - uses: actions/checkout@main
           
       - name: Validate Deprecated KQL values
-        uses: SecureHats/kusto-alias@v0.1.0-alpha
+        uses: SecureHats/kusto-alias@v0.1.1-alpha
         with:
           filesPath: ./packages/${{ matrix.package }}
           logLevel: Minimal
