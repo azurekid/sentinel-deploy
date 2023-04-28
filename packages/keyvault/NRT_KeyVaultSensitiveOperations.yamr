@@ -19,12 +19,12 @@ query: |
   AzureDiagnostics
   | where ResourceType =~ "VAULTS" and ResultType =~ "Success"
   | where OperationName in~ (SensitiveOperationList)
-  | extend ResultType = column_ifexists("ResultType", "NoResultType"), 
-  requestUri_s = column_ifexists("requestUri_s", "None"), 
-  identity_claim_oid_g = column_ifexists("identity_claim_oid_g", "None"), CallerIPAddress = column_ifexists("CallerIPAddress", "None"), 
-  clientInfo_s = column_ifexists("clientInfo_s", "None"), 
-  identity_claim_upn_s = column_ifexists("identity_claim_upn_s", "None")
-  | summarize EventCount=count(), StartTimeUtc=min(TimeGenerated), EndTimeUtc=max(TimeGenerated), TimeTriggered=make_list(TimeGenerated),OperationNameList=make_set(OperationName), RequestURLList=make_set(requestUri_s), CallerIPList = make_set(CallerIPAddress),  CallerIPMax= arg_max(CallerIPAddress,*) by ResourceType, ResultType, Resource, identity_claim_upn_s, clientInfo_s
+  | extend ResultType = columnifexists("ResultType", "NoResultType"), 
+  requestUri_s = columnifexists("requestUri_s", "None"), 
+  identity_claim_oid_g = columnifexists("identity_claim_oid_g", "None"), CallerIPAddress = columnifexists("CallerIPAddress", "None"), 
+  clientInfo_s = columnifexists("clientInfo_s", "None"), 
+  identity_claim_upn_s = columnifexists("identity_claim_upn_s", "None")
+  | summarize EventCount=count(), StartTimeUtc=min(TimeGenerated), EndTimeUtc=max(TimeGenerated), TimeTriggered=make_list(TimeGenerated),OperationNameList=makeset(OperationName), RequestURLList=makeset(requestUri_s), CallerIPList = makeset(CallerIPAddress),  CallerIPMax= arg_max(CallerIPAddress,*) by ResourceType, ResultType, Resource, identity_claim_upn_s, clientInfo_s
   | extend timestamp = StartTimeUtc
   | extend Name = tostring(split(identity_claim_upn_s,'@',0)[0]), UPNSuffix = tostring(split(identity_claim_upn_s,'@',1)[0])
 entityMappings:
