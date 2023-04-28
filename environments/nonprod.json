@@ -6,7 +6,6 @@
   "solutionsPath": "packages",
   "location": "westeurope",
   "customerSolutions": [
-    "keyvault",
-    "azure-ad"
+    "keyvault"
   ]
 }

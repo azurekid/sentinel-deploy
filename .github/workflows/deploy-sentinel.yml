@@ -12,7 +12,7 @@ jobs:
       sentinelResourceGroup: ${{ env.sentinelResourceGroup }}
       workspaceName:         ${{ env.workspaceName }}
       location:              ${{ env.location }}
-      # arrayObject:           ${{ steps.array.outputs.arrayObject }}
+      # arrayObject:           ${{ steps.array.outputs.arrayObject }} 
 
     steps:
       # Checkout code
