@@ -10,7 +10,8 @@ jobs:
       customerSolutions:     ${{ env.solutions_customerSolutions }}
       sentinelResourceGroup: ${{ env.LogAnalytics_sentinelResourceGroup }}
       workspaceName:         ${{ env.LogAnalytics_workspaceName }}
-      location:              ${{ env.LogAnalytics_location }} 
+      location:              ${{ env.LogAnalytics_location }}
+      solutionsPath:         ${{ env.LogAnalytics_solutionsPath }}
   
     steps:
       # Checkout code
@@ -71,14 +72,14 @@ jobs:
       - name: Validate Deprecated KQL values
         uses: SecureHats/kusto-alias@v0.1.5-alpha
         with:
-          filesPath: ./packages/${{ matrix.package }}
+          filesPath: ./${{ needs.set-variables.outputs.solutionsPath }}/${{ matrix.package }}
           logLevel: Minimal
           
       - name: Convert Template files
         uses: SecureHats/YamlTo-Arm@v0.1.7
         with:
-          filesPath:  ./packages/${{ matrix.package }}
-          outputPath: ./packages/${{ matrix.package }}
+          filesPath:  ./${{ needs.set-variables.outputs.solutionsPath }}/${{ matrix.package }}
+          outputPath: ./${{ needs.set-variables.outputs.solutionsPath }}/${{ matrix.package }}
           
       # Log into Azure
       - uses: azure/login@v1
@@ -90,5 +91,5 @@ jobs:
         with:
           subscriptionId:    ${{ secrets.AZURE_SUBSCRIPTION }}
           resourceGroupName: "${{ needs.set-variables.outputs.sentinelResourceGroup }}"
-          template:          "./packages/${{ matrix.package }}/deployment.json"
+          template:          "./${{ needs.set-variables.outputs.solutionsPath }}/${{ matrix.package }}/deployment.json"
           parameters:        "workspace=${{ needs.set-variables.outputs.workspaceName }}"
