@@ -21,7 +21,7 @@ jobs:
       uses: SecureHats/JsonTo-Variable@v0.1.3
       id: build-variable
       with:
-        filePath:       './environments/nonprod.yml'
+        filePath:       './environments/nonprod.json'
         outputs:        $true
  
   deploy-resources:
