@@ -28,7 +28,7 @@ jobs:
     - name: Create Json Array
       id: array
       run: |
-          $arrayList = "${{ env.customerSolutions }}" -split ';' // | ConvertTo-Json -Compress
+          $arrayList = "${{ env.customerSolutions }}" -split ';'
           if ($arrayList -gt 1) {
             $arrayObject = $arrayList | ConvertTo-Json -Compress
           } else {
