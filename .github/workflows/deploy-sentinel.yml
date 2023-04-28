@@ -18,10 +18,10 @@ jobs:
       
       # Load variables
     - name: Set Variables
-      uses: SecureHats/JsonTo-Variable@v0.1.0
+      uses: SecureHats/JsonTo-Variable@v0.1.2
       id: build-variable
       with:
-        filePath:       './environments/nonprod.json'
+        filePath:       './environments/nonprod.yml'
         outputs:        $true
  
   deploy-resources:
