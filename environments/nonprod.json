@@ -1,11 +1,17 @@
 {
-  "workspaceName": "rdk-github-workspace",
-  "subscriptionId": "dd07ba65-eaa4-416d-b492-bd8cde619247",
-  "serviceConnection": "Visual Studio Enterprise Subscription – MPN",
-  "sentinelResourceGroup": "rdk-github-rg",
-  "solutionsPath": "packages",
-  "location": "westeurope",
-  "customerSolutions": [
-    "keyvault"
+  "LogAnalytics": [
+    {
+      "sentinelResourceGroup": "rdk-github-rg",
+      "workspaceName": "rdk-github-workspace",
+      "location": "westeurope"
+    }
+  ],
+  "solutions": [
+    {
+      "solutionsPath": "packages",
+      "customerSolutions": [
+        "keyvault"
+      ]
+    }
   ]
 }
