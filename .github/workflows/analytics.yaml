@@ -11,8 +11,15 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@v3
+      
+      - name: Validate Deprecated KQL values
+        uses: SecureHats/kusto-alias@v0.1.5-alpha
+        with:
+          filesPath: ./packages/**
+          logLevel: Minimal
+      
       - name: Validate Sentinel Analytics Rules
         uses: SecureHats/validate-detections@v1.1
         with:
-          filesPath: ./packages/azure-ad
+          filesPath: ./packages/**
           logLevel: Minimal
