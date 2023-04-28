@@ -29,7 +29,7 @@ jobs:
       id: array
       run: |
           $arrayList = "${{ env.customerSolutions }}" -split ';'
-          if ($arrayList -gt 1) {
+          if ($arrayList.count -gt 1) {
             $arrayObject = $arrayList | ConvertTo-Json -Compress
           } else {
             $arrayObject = '[{0}]' -f $listArray
