@@ -29,38 +29,38 @@ jobs:
     needs: set-variables
     steps:
       #  Log into Azure
-#     - uses: azure/login@v1
-#       with:
-#         creds: ${{ secrets.AZURE_CREDENTIALS }}
+    - uses: azure/login@v1
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
     
-#       # Checkout code
+      # Checkout code
     - uses: actions/checkout@main
 
-#       # Deploy ARM template
-#     - name: Create Resource Group
-#       uses: azure/arm-deploy@v1
-#       with:
-#         subscriptionId:    ${{ secrets.AZURE_SUBSCRIPTION }}
-#         scope:             'subscription'
-#         region:            ${{ needs.set-variables.outputs.location }}
-#         template:          "./resources/resourcegroup.bicep"
-#         parameters:        "resourceGroupName=${{ needs.set-variables.outputs.sentinelResourceGroup }}"
+      # Deploy ARM template
+    - name: Create Resource Group
+      uses: azure/arm-deploy@v1
+      with:
+        subscriptionId:    ${{ secrets.AZURE_SUBSCRIPTION }}
+        scope:             'subscription'
+        region:            ${{ needs.set-variables.outputs.location }}
+        template:          "./resources/resourcegroup.bicep"
+        parameters:        "resourceGroupName=${{ needs.set-variables.outputs.sentinelResourceGroup }}"
     
-#     - name: Create Log Analytics workspace
-#       uses: azure/arm-deploy@v1
-#       with:
-#         subscriptionId:    ${{ secrets.AZURE_SUBSCRIPTION }}
-#         resourceGroupName: ${{ needs.set-variables.outputs.sentinelResourceGroup }}
-#         template:          "./resources/workspace.bicep"
-#         parameters:        "workspaceName=${{ needs.set-variables.outputs.workspaceName }}"
+    - name: Create Log Analytics workspace
+      uses: azure/arm-deploy@v1
+      with:
+        subscriptionId:    ${{ secrets.AZURE_SUBSCRIPTION }}
+        resourceGroupName: ${{ needs.set-variables.outputs.sentinelResourceGroup }}
+        template:          "./resources/workspace.bicep"
+        parameters:        "workspaceName=${{ needs.set-variables.outputs.workspaceName }}"
     
-    # - name: Enable Microsoft Sentinel
-    #   uses: azure/arm-deploy@v1
-    #   with:
-    #     subscriptionId:    ${{ secrets.AZURE_SUBSCRIPTION }}
-    #     resourceGroupName: ${{ needs.set-variables.outputs.sentinelResourceGroup }}
-    #     template:          "./resources/security-insights.bicep"
-    #     parameters:        "workspaceName=${{ needs.set-variables.outputs.workspaceName }}"
+    - name: Enable Microsoft Sentinel
+      uses: azure/arm-deploy@v1
+      with:
+        subscriptionId:    ${{ secrets.AZURE_SUBSCRIPTION }}
+        resourceGroupName: ${{ needs.set-variables.outputs.sentinelResourceGroup }}
+        template:          "./resources/security-insights.bicep"
+        parameters:        "workspaceName=${{ needs.set-variables.outputs.workspaceName }}"
       
   deploy_analytics:
     strategy:
@@ -92,7 +92,6 @@ jobs:
       - uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
-#           enable-AzPSSession: true
           
       - name: Deploy Analytics
         uses: azure/arm-deploy@v1
