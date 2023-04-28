@@ -7,8 +7,8 @@ jobs:
   set-variables:
     runs-on: ubuntu-latest
     outputs:
-      # customerSolutions:     ${{ env.customerSolutions }}
-      customerSolutions:     ${{ steps.build-variable.outputs.customerSolutions }}
+      customerSolutions:     ${{ env.customerSolutions }}
+      # customerSolutions:     ${{ steps.build-variable.outputs.customerSolutions }}
       sentinelResourceGroup: ${{ env.sentinelResourceGroup }}
       workspaceName:         ${{ env.workspaceName }}
       location:              ${{ env.location }}
@@ -27,17 +27,18 @@ jobs:
         arraySeparator: ';'
         outputs:        $true
       
-    # - name: Create Json Array
-    #   id: array
-    #   run: |
-    #       $arrayList = "${{ env.customerSolutions }}" -split ';'
-    #       if ($arrayList.count -gt 1) {
-    #         $arrayObject = $arrayList | ConvertTo-Json -Compress
-    #       } else {
-    #         $arrayObject = "[""$($arrayList)""]"
-    #       }
-    #       echo "arrayObject=$arrayObject" >> $env:GITHUB_OUTPUT
-    #   shell: pwsh
+    - name: Create Json Array
+      id: array
+      run: |
+          Write-Output "solutions: ${{ env.customerSolutions }}"
+          # $arrayList = "${{ env.customerSolutions }}" -split ';'
+          # if ($arrayList.count -gt 1) {
+          #   $arrayObject = $arrayList | ConvertTo-Json -Compress
+          # } else {
+          #   $arrayObject = "[""$($arrayList)""]"
+          # }
+          # echo "arrayObject=$arrayObject" >> $env:GITHUB_OUTPUT
+      shell: pwsh
  
   deploy-resources:
     runs-on: ubuntu-latest
