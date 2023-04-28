@@ -11,7 +11,7 @@ jobs:
       sentinelResourceGroup: ${{ env.sentinelResourceGroup }}
       workspaceName:         ${{ env.workspaceName }}
       location:              ${{ env.location }}
-      list:                  ${{ steps.array.outputs.list }}
+      arrayObject:           ${{ steps.array.outputs.arrayObject }}
     steps:
       # Checkout code
     - uses: actions/checkout@main
@@ -28,9 +28,13 @@ jobs:
     - name: Create Json Array
       id: array
       run: |
-          $arrayList = "${{ env.customerSolutions }}" -split ';' | ConvertTo-Json -Compress
-          echo $arrayList
-          echo "list=$arrayList" >> $env:GITHUB_OUTPUT
+          $arrayList = "${{ env.customerSolutions }}" -split ';' // | ConvertTo-Json -Compress
+          if ($arrayList -gt 1) {
+            $arrayObject = $arrayList | ConvertTo-Json -Compress
+          } else {
+            $arrayObject = '[{0}]' -f $listArray
+          }
+          echo "arrayObject=$arrayObject" >> $env:GITHUB_OUTPUT
       shell: pwsh
  
   deploy-resources:
@@ -74,7 +78,7 @@ jobs:
   deploy_analytics:
     strategy:
       matrix:
-        package: ${{ fromJSON(needs.set-variables.outputs.list ) }}
+        package: ${{ fromJSON(needs.set-variables.outputs.arrayObject ) }}
     runs-on: ubuntu-latest
     continue-on-error: true
     needs: 
