@@ -22,6 +22,7 @@ resource workspace 'Microsoft.OperationalInsights/workspaces@2015-11-01-preview'
 
 resource SecurityInsights 'Microsoft.OperationsManagement/solutions@2015-11-01-preview' = {
   name: 'SecurityInsights(${workspaceName})'
+  location: resourceGroupLocation
   plan: {
     name: 'SecurityInsights(${workspaceName})'
     product: 'OMSGallery/SecurityInsights'

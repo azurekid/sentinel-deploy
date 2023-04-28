@@ -100,3 +100,4 @@ jobs:
           resourceGroupName: "${{ needs.set-variables.outputs.sentinelResourceGroup }}"
           template:          "./packages/${{ matrix.package }}/deployment.json"
           parameters:        "workspace=${{ needs.set-variables.outputs.workspaceName }}"
+          
