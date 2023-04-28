@@ -76,6 +76,7 @@ jobs:
       matrix:
         package: ${{ fromJSON(needs.set-variables.outputs.list ) }}
     runs-on: ubuntu-latest
+    continue-on-error: true
     needs: 
       - deploy-resources
       - set-variables
