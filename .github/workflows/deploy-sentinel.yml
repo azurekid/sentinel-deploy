@@ -11,7 +11,8 @@ jobs:
       sentinelResourceGroup: ${{ env.sentinelResourceGroup }}
       workspaceName:         ${{ env.workspaceName }}
       location:              ${{ env.location }}
-      arrayObject:           ${{ steps.array.outputs.arrayObject }}
+      # arrayObject:           ${{ steps.array.outputs.arrayObject }}
+      customerSolutions:    ${{ env.customerSolutions }}
     steps:
       # Checkout code
     - uses: actions/checkout@main
@@ -78,7 +79,7 @@ jobs:
   deploy_analytics:
     strategy:
       matrix:
-        package: ${{ fromJSON(needs.set-variables.outputs.arrayObject ) }}
+        package: ${{ fromJSON(needs.set-variables.outputs.customerSolutions ) }}
     runs-on: ubuntu-latest
     continue-on-error: true
     needs: 
