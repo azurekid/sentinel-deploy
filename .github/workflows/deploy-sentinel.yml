@@ -32,7 +32,7 @@ jobs:
           if ($arrayList.count -gt 1) {
             $arrayObject = $arrayList | ConvertTo-Json -Compress
           } else {
-            $arrayObject = '[{0}]' -f $listArray
+            $arrayObject = "[""$($arrayList)""]"
           }
           echo "arrayObject=$arrayObject" >> $env:GITHUB_OUTPUT
       shell: pwsh
