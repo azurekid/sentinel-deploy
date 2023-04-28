@@ -13,7 +13,7 @@ jobs:
         uses: actions/checkout@v3
       
       - name: Validate Deprecated KQL values
-        uses: SecureHats/kusto-alias@v0.1.5-alpha
+        uses: SecureHats/kusto-alias@v0.1.6-alpha
         with:
           filesPath: ./packages/**
           logLevel: Minimal
