@@ -7,8 +7,8 @@ jobs:
   set-variables:
     runs-on: ubuntu-latest
     outputs:
-      customerSolutions:     ${{ env.customerSolutions }}
-      # customerSolutions:     ${{ steps.build-variable.outputs.customerSolutions }}
+      # customerSolutions:     ${{ env.customerSolutions }}
+      customerSolutions:     ${{ steps.build-variable.outputs.customerSolutions }}
       sentinelResourceGroup: ${{ env.sentinelResourceGroup }}
       workspaceName:         ${{ env.workspaceName }}
       location:              ${{ env.location }}
