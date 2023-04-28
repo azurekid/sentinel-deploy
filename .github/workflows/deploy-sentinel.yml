@@ -24,21 +24,7 @@ jobs:
       id: build-variable
       with:
         filePath:       './environments/nonprod.json'
-        arraySeparator: ';'
         outputs:        $true
-      
-    # - name: Create Json Array
-    #   id: array
-    #   run: |
-    #       Write-Output "solutions: ${{ env.customerSolutions }}"
-    #       # $arrayList = "${{ env.customerSolutions }}" -split ';'
-    #       # if ($arrayList.count -gt 1) {
-    #       #   $arrayObject = $arrayList | ConvertTo-Json -Compress
-    #       # } else {
-    #       #   $arrayObject = "[""$($arrayList)""]"
-    #       # }
-    #       # echo "arrayObject=$arrayObject" >> $env:GITHUB_OUTPUT
-    #   shell: pwsh
  
   deploy-resources:
     runs-on: ubuntu-latest
