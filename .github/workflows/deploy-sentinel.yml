@@ -8,11 +8,9 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       customerSolutions:     ${{ env.customerSolutions }}
-      # customerSolutions:     ${{ steps.build-variable.outputs.customerSolutions }}
       sentinelResourceGroup: ${{ env.sentinelResourceGroup }}
       workspaceName:         ${{ env.workspaceName }}
       location:              ${{ env.location }}
-      # arrayObject:           ${{ steps.array.outputs.arrayObject }} 
 
     steps:
       # Checkout code
