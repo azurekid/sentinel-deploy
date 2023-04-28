@@ -18,7 +18,7 @@ jobs:
       
       # Load variables
     - name: Set Variables
-      uses: SecureHats/JsonTo-Variable@v0.0.20
+      uses: SecureHats/JsonTo-Variable@v0.0.23
       id: build-variable
       with:
         filePath:       './environments/nonprod.json'
