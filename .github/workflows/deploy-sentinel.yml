@@ -11,7 +11,7 @@ jobs:
       sentinelResourceGroup: ${{ env.sentinelResourceGroup }}
       workspaceName:         ${{ env.workspaceName }}
       location:              ${{ env.location }}
-
+  
     steps:
       # Checkout code
     - uses: actions/checkout@main
