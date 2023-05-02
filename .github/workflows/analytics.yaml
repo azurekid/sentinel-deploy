@@ -19,7 +19,7 @@ jobs:
           logLevel: Detailed
       
       - name: Validate Sentinel Analytics Rules
-        uses: f-bader/validate-detections@v2 #.1
+        uses: SecureHats/validate-detections@v1.2
         with:
           filesPath: ./packages/**
           logLevel: Detailed
