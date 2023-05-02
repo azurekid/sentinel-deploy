@@ -28,7 +28,7 @@ query: |
   identity_claim_oid_g = column_ifexists("identity_claim_oid_g", "None"), CallerIPAddress = column_ifexists("CallerIPAddress", "None"), 
   clientInfo_s = column_ifexists("clientInfo_s", "None"), 
   identity_claim_upn_s = column_ifexists("identity_claim_upn_s", "None")
-  | summarize EventCount=count(), StartTimeUtc=min(TimeGenerated), EndTimeUtc=max(TimeGenerated), TimeTriggered=make_list(TimeGenerated),OperationNameList=makeset(OperationName), RequestURLList=makeset(requestUri_s), CallerIPList = makeset(CallerIPAddress),  CallerIPMax= arg_max(CallerIPAddress,*) by ResourceType, ResultType, Resource, identity_claim_upn_s, clientInfo_s
+  | summarize EventCount=count(), StartTimeUtc=min(TimeGenerated), EndTimeUtc=max(TimeGenerated), TimeTriggered=make_list(TimeGenerated),OperationNameList=make_set(OperationName), RequestURLList=make_set(requestUri_s), CallerIPList = make_set(CallerIPAddress),  CallerIPMax= arg_max(CallerIPAddress,*) by ResourceType, ResultType, Resource, identity_claim_upn_s, clientInfo_s
   | extend timestamp = StartTimeUtc
   | extend Name = tostring(split(identity_claim_upn_s,'@',0)[0]), UPNSuffix = tostring(split(identity_claim_upn_s,'@',1)[0])
 entityMappings:
