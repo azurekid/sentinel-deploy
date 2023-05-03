@@ -67,7 +67,6 @@ param enableWindowsFirewall bool = false
 
 var azureSentinelSolutionName = 'SecurityInsights(${logAnalyticsName})'
 var skuLevel = ((toLower(pricingTierLogAnalytics) == 'capacityreservation') ? json('{"name":"${pricingTierLogAnalytics}","capacityReservationLevel":${capacityReservationLevelLogAnalytics}}') : json('{"name":"${pricingTierLogAnalytics}"}'))
-var sentinelSku = (pricingTierSentinel ? json('{"name":"CapacityReservation","capacityReservationLevel":${capacityReservationLevelSentinel}}') : json('{"name":"PerGB"}'))
 var dnsAnalyticsSolutionName = 'DnsAnalytics(${logAnalyticsName})'
 var containerInsightsSolutionName = 'ContainerInsights(${logAnalyticsName})'
 var behaviorAnalyticsInsightsSolutionName = 'BehaviorAnalyticsInsights(${logAnalyticsName})'
