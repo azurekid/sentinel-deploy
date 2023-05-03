@@ -100,7 +100,6 @@ resource azureSentinelSolution 'Microsoft.OperationsManagement/solutions@2015-11
   }
   properties: {
     workspaceResourceId: logAnalytics.id
-    sku: sentinelSku
   }
 }
 
