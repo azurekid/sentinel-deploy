@@ -1,8 +1,8 @@
 {
   "LogAnalytics": [
     {
-      "sentinelResourceGroup": "rdk-github-rg",
-      "workspaceName": "rdk-github-workspace",
+      "sentinelResourceGroup": "rdk-github-devrg",
+      "workspaceName": "rdk-github-devworkspace",
       "location": "westeurope"
     }
   ],
