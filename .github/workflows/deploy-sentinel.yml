@@ -11,7 +11,7 @@ jobs:
       sentinelResourceGroup: ${{ env.LogAnalytics_sentinelResourceGroup }}
       workspaceName:         ${{ env.LogAnalytics_workspaceName }}
       location:              ${{ env.LogAnalytics_location }}
-      solutionsPath:         ${{ env.LogAnalytics_solutionsPath }}
+      solutionsPath:         ${{ env.solutions_solutionsPath }}
   
     steps:
       # Checkout code
