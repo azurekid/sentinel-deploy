@@ -66,7 +66,7 @@ param enableVMInsights bool = false
 param enableWindowsFirewall bool = false
 
 var azureSentinelSolutionName = 'SecurityInsights(${logAnalyticsName})'
-var sku = ((toLower(pricingTierLogAnalytics) == 'capacityreservation') ? json('{"name":"${pricingTierLogAnalytics}","capacityReservationLevel":${capacityReservationLevelLogAnalytics}}') : json('{"name":"${pricingTierLogAnalytics}"}'))
+var skuLevel = ((toLower(pricingTierLogAnalytics) == 'capacityreservation') ? json('{"name":"${pricingTierLogAnalytics}","capacityReservationLevel":${capacityReservationLevelLogAnalytics}}') : json('{"name":"${pricingTierLogAnalytics}"}'))
 var sentinelSku = (pricingTierSentinel ? json('{"name":"CapacityReservation","capacityReservationLevel":${capacityReservationLevelSentinel}}') : json('{"name":"PerGB"}'))
 var dnsAnalyticsSolutionName = 'DnsAnalytics(${logAnalyticsName})'
 var containerInsightsSolutionName = 'ContainerInsights(${logAnalyticsName})'
@@ -79,7 +79,7 @@ resource logAnalytics 'microsoft.operationalinsights/workspaces@2021-06-01' = {
   name: logAnalyticsName
   location: location
   properties: {
-    sku: sku
+    sku: skuLevel
     retentionInDays: retentionInDays
     workspaceCapping: {
       dailyQuotaGb: -1
