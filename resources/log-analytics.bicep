@@ -15,9 +15,6 @@ param logAnalyticsName string
 ])
 param pricingTierLogAnalytics string = 'PerGB2018'
 
-@description('Enable custom pricing tier for Sentinel, default false.')
-param pricingTierSentinel bool = false
-
 @description('Capacity reservation level which is used together with pricingTier capacityreservation for Log Analytics.')
 @allowed([
   100
