@@ -47,6 +47,14 @@ jobs:
         template:          "./resources/resourcegroup.bicep"
         parameters:        "resourceGroupName=${{ needs.set-variables.outputs.sentinelResourceGroup }} location=${{ needs.set-variables.outputs.location }}"
     
+    #- name: Create Log Analytics workspace
+    #  uses: azure/arm-deploy@v1
+    #  with:
+    #    subscriptionId:    ${{ secrets.AZURE_SUBSCRIPTION }}
+    #    resourceGroupName: ${{ needs.set-variables.outputs.sentinelResourceGroup }}
+    #    template:          "./resources/workspace.bicep"
+    #    parameters:        "workspaceName=${{ needs.set-variables.outputs.workspaceName }}"
+        
     - name: Create Log Analytics workspace
       uses: azure/arm-deploy@v1
       with:
