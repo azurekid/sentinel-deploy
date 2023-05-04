@@ -28,19 +28,6 @@ param pricingTierLogAnalytics string = 'PerGB2018'
 ])
 param capacityReservationLevelLogAnalytics int = 100
 
-@description('Capacity reservation level which is used together with pricingTier capacityreservation for Sentinel.')
-@allowed([
-  100
-  200
-  300
-  400
-  500
-  1000
-  2000
-  5000
-])
-param capacityReservationLevelSentinel int = 100
-
 @description('How many days data should be retained')
 param retentionInDays int = 90
 
