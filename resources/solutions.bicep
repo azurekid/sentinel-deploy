@@ -129,7 +129,7 @@ resource sampleIncident 'Microsoft.SecurityInsights/incidents@2022-12-01-preview
   scope: 'resource'
   dependsOn: azureSentinelSolution
   properties: {
-    severity: "High"
+    severity: 'High'
     status: 'Open'
     title: 'Azure AD is compromised'
     classification: 'Undetermined'
