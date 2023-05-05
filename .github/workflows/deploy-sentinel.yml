@@ -57,20 +57,20 @@ jobs:
         template:          "./resources/resourcegroup.bicep"
         parameters:        "resourceGroupName=${{ needs.set-variables.outputs.sentinelResourceGroup }} location=${{ needs.set-variables.outputs.location }}"
     
-    #- name: Create Log Analytics workspace
-    #  uses: azure/arm-deploy@v1
-    #  with:
-    #    subscriptionId:    ${{ secrets.AZURE_SUBSCRIPTION }}
-    #    resourceGroupName: ${{ needs.set-variables.outputs.sentinelResourceGroup }}
-    #    template:          "./resources/workspace.bicep"
-    #    parameters:        "workspaceName=${{ needs.set-variables.outputs.workspaceName }}"
+    - name: Create Log Analytics workspace
+     uses: azure/arm-deploy@v1
+     with:
+       subscriptionId:    ${{ secrets.AZURE_SUBSCRIPTION }}
+       resourceGroupName: ${{ needs.set-variables.outputs.sentinelResourceGroup }}
+       template:          "./resources/workspace.bicep"
+       parameters:        "workspaceName=${{ needs.set-variables.outputs.workspaceName }}"
         
     - name: Create Log Analytics workspace
       uses: azure/arm-deploy@v1
       with:
         subscriptionId:    ${{ secrets.AZURE_SUBSCRIPTION }}
         resourceGroupName: ${{ needs.set-variables.outputs.sentinelResourceGroup }}
-        template:          "./resources/log-analytics.bicep"
+        template:          "./resources/solutions.bicep"
         parameters:        "logAnalyticsName=${{ needs.set-variables.outputs.workspaceName }} location=${{ needs.set-variables.outputs.location }} retentionInDays=${{ needs.set-variables.outputs.retentionInDays }} enableBehaviorAnalyticsInsights=${{ needs.set-variables.outputs.enableBehaviorAnalyticsInsights }} enableLogicAppsManagementInsights=${{ needs.set-variables.outputs.enableLogicAppsManagementInsights }} enableDnsAnalytics=${{ needs.set-variables.outputs.enableDnsAnalytics }} enableContainerInsights=${{ needs.set-variables.outputs.enableContainerInsights }} enableVMInsights=${{ needs.set-variables.outputs.enableVMInsights }}"
       
   deploy_analytics:
