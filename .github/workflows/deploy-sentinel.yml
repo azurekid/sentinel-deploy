@@ -79,7 +79,6 @@ jobs:
           "
             workspaceName=${{ needs.set-variables.outputs.workspaceName }}
             location=${{ needs.set-variables.outputs.location }}
-            retentionInDays=${{ needs.set-variables.outputs.retentionInDays }}
             enableBehaviorAnalyticsInsights=${{ needs.set-variables.outputs.enableBehaviorAnalyticsInsights }}
             enableLogicAppsManagementInsights=${{ needs.set-variables.outputs.enableLogicAppsManagementInsights }}
             enableDnsAnalytics=${{ needs.set-variables.outputs.enableDnsAnalytics }}
@@ -119,3 +118,4 @@ jobs:
           resourceGroupName: "${{ needs.set-variables.outputs.sentinelResourceGroup }}"
           template:          "./${{ needs.set-variables.outputs.solutionsPath }}/${{ matrix.package }}/deployment.json"
           parameters:        "workspace=${{ needs.set-variables.outputs.workspaceName }}"
+          
