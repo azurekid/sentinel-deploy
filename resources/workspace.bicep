@@ -10,7 +10,9 @@ resource workspace 'microsoft.operationalinsights/workspaces@2021-06-01' = {
   name: workspaceName
   location: resourceGroupLocation
   properties: {
-    sku: 'PerGB2018'
+    sku: {
+      name: 'PerGB2018' 
+    }
     retentionInDays: retentionInDays
     publicNetworkAccessForIngestion: 'Enabled'
     publicNetworkAccessForQuery: 'Enabled'
