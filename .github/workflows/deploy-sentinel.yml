@@ -65,7 +65,7 @@ jobs:
         template:          "./resources/workspace.bicep"
         parameters:        "workspaceName=${{ needs.set-variables.outputs.workspaceName }}"
         
-    - name: Create Log Analytics workspace
+    - name: Create Sentinel Solutions
       uses: azure/arm-deploy@v1
       with:
         subscriptionId:    ${{ secrets.AZURE_SUBSCRIPTION }}

@@ -24,10 +24,10 @@ resource workspace 'Microsoft.OperationalInsights/workspaces@2015-11-01-preview'
 }
 
 resource azureSentinelSolution 'Microsoft.OperationsManagement/solutions@2015-11-01-preview' = {
-  name: azureSentinelSolutionName
+  name: workspaceName
   location: location
   plan: {
-    name: azureSentinelSolutionName
+    name: workspaceName
     promotionCode: ''
     product: 'OMSGallery/SecurityInsights'
     publisher: 'Microsoft'
