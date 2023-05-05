@@ -9,14 +9,14 @@ param sku string = 'PerGB2018'
 
 param resourceGroupLocation string = resourceGroup().location
 
-resource workspace 'Microsoft.OperationalInsights/workspaces@2015-11-01-preview' = {
+resource workspace 'microsoft.operationalinsights/workspaces@2021-06-01' = {
   name: workspaceName
   location: resourceGroupLocation
   properties: {
+    sku: skuLevel
     retentionInDays: retentionInDays
-    sku: {
-      name: sku
-    }
+    publicNetworkAccessForIngestion: 'Enabled'
+    publicNetworkAccessForQuery: 'Enabled'
   }
 }
 
