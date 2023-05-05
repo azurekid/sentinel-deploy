@@ -56,10 +56,8 @@ jobs:
         region:         ${{ needs.set-variables.outputs.location }}
         template:       "./resources/resourcegroup.bicep"
         parameters: 
-          "
-            resourceGroupName = ${{ needs.set-variables.outputs.sentinelResourceGroup }}
-            location          = ${{ needs.set-variables.outputs.location }}
-          "
+          "resourceGroupName = ${{ needs.set-variables.outputs.sentinelResourceGroup }}
+          location           = ${{ needs.set-variables.outputs.location }}"
     
     - name: Create Log Analytics workspace
       uses: azure/arm-deploy@v1
