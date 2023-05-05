@@ -40,10 +40,10 @@ resource azureSentinelSolution 'Microsoft.OperationsManagement/solutions@2015-11
 }
 
 resource behaviorAnalyticsInsightsSolution 'Microsoft.OperationsManagement/solutions@2015-11-01-preview' = if (enableBehaviorAnalyticsInsights) {
-  name: behaviorAnalyticsInsightsSolutionName
+  name: 'behaviorAnalyticsInsights(${workspaceName})'
   location: location
   plan: {
-    name: behaviorAnalyticsInsightsSolutionName
+    name: 'behaviorAnalyticsInsights(${workspaceName})'
     promotionCode: ''
     product: 'OMSGallery/BehaviorAnalyticsInsights'
     publisher: 'Microsoft'
