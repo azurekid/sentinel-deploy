@@ -117,5 +117,4 @@ jobs:
           subscriptionId:    ${{ secrets.AZURE_SUBSCRIPTION }}
           resourceGroupName: "${{ needs.set-variables.outputs.sentinelResourceGroup }}"
           template:          "./${{ needs.set-variables.outputs.solutionsPath }}/${{ matrix.package }}/deployment.json"
-          parameters:        "workspace=${{ needs.set-variables.outputs.workspaceName }}"
-          
+          parameters:        "workspace=${{ needs.set-variables.outputs.workspaceName }}"       
