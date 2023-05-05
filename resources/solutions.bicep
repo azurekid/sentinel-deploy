@@ -36,8 +36,7 @@ resource azureSentinelSolution 'Microsoft.OperationsManagement/solutions@2015-11
     publisher: 'Microsoft'
   }
   properties: {
-    workspaceResourceId: workspace.id
-    mode: 'Enabled'
+    workspaceResourceId: workspace.customerId
   }
 }
 
