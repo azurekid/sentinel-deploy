@@ -26,6 +26,11 @@ resource workspace 'Microsoft.OperationalInsights/workspaces@2015-11-01-preview'
   location: location
 }
 
+resource onboardingStates 'Microsoft.OperationsManagement/solutions@2022-12-01-preview' = {
+  name: 'onboardingStates(${workspaceName})'
+  scope: workspace
+}
+
 resource azureSentinelSolution 'Microsoft.OperationsManagement/solutions@2015-11-01-preview' = {
   name: 'SecurityInsights(${workspaceName})'
   location: location
@@ -121,6 +126,18 @@ resource windowsFirewallSolution 'Microsoft.OperationsManagement/solutions@2015-
   }
   properties: {
     workspaceResourceId: workspace.id
+  }
+}
+
+resource sampleIncident 'Microsoft.SecurityInsights/incidents@2022-12-01-preview' = {
+  name: 'sampleIncident(${workspaceName})'
+  dependsOn: azureSentinelSolution
+  properties: {
+    severity: "High"
+    status: 'Open'
+    title: 'Azure AD is compromised'
+    classification: 'Undetermined'
+  
   }
 }
 
