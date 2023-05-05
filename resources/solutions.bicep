@@ -1,7 +1,7 @@
 @description('name of the log analytics workspace')
 param workspaceName string
 
-param resourceGroupLocation string = resourceGroup().location
+param location string = resourceGroup().location
 
 @description('Option to enable the Microsoft Behavior Analytics Insights Solution.')
 param enableBehaviorAnalyticsInsights bool = false
