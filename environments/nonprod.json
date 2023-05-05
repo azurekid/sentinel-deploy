@@ -2,30 +2,24 @@
   "LogAnalytics": [
     {
       "sentinelResourceGroup": "rdk-dev-rg",
-      "workspaceName": "rdk-dev-workspace",
+      "workspaceName": "rdk-wsm-workspace",
       "location": "westeurope",
       "pricingTierLogAnalytics": "PerGB2018",
       "retentionInDays": 90
     }
   ],
   "solutions": {
-    "enableBehaviorAnalyticsInsights": true,
-    "enableLogicAppsManagementInsights": true,
-    "enableDnsAnalytics": true,
-    "enableContainerInsights": true,
-    "enableVMInsights": true,
-    "enableWindowsFirewall": true
+    "enableBehaviorAnalyticsInsights": false,
+    "enableLogicAppsManagementInsights": false,
+    "enableDnsAnalytics": false,
+    "enableContainerInsights": false,
+    "enableVMInsights": false,
+    "enableWindowsFirewall": false
   },
   "packages": [
     {
       "solutionsPath": "packages",
-      "customerSolutions": [
-        "azure-ad",
-        "azure-firewall",
-        "paloalto",
-        "cisco-firepower",
-        "rituals-detections"
-      ]
+      "customerSolutions": []
     }
   ]
 }
