@@ -8,20 +8,20 @@
       "pricingTierSentinel": false,
       "capacityReservationLevelSentinel": 100,
       "retentionInDays": 90,
-      "enableBehaviorAnalyticsInsights": true,
-      "enableLogicAppsManagementInsights": true,
-      "enableDnsAnalytics": true,
-      "enableContainerInsights": true,
-      "enableVMInsights": true,
-      "enableWindowsFirewall": true
     }
   ],
-  "solutions": [
+  "solutions": {
+    "enableBehaviorAnalyticsInsights": true,
+    "enableLogicAppsManagementInsights": true,
+    "enableDnsAnalytics": true,
+    "enableContainerInsights": true,
+    "enableVMInsights": true,
+    "enableWindowsFirewall": true
+  },
+  "packages": [
     {
       "solutionsPath": "packages",
       "customerSolutions": [
-        "keyvault",
-        "azure-ad"
       ]
     }
   ]

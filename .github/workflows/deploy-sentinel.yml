@@ -7,11 +7,11 @@ jobs:
   set-variables:
     runs-on: ubuntu-latest
     outputs:
-      customerSolutions:     ${{ env.solutions_customerSolutions }}
+      customerSolutions:     ${{ env.packages_customerSolutions }}
       sentinelResourceGroup: ${{ env.LogAnalytics_sentinelResourceGroup }}
       workspaceName:         ${{ env.LogAnalytics_workspaceName }}
       location:              ${{ env.LogAnalytics_location }}
-      solutionsPath:         ${{ env.solutions_solutionsPath }}
+      solutionsPath:         ${{ env.packages_solutionsPath }}
       pricingTierLogAnalytics:           ${{ env.LogAnalytics_pricingTierLogAnalytics }}
       pricingTierSentinel:               ${{ env.LogAnalytics_pricingTierSentinel }}
       capacityReservationLevelSentinel:  ${{ env.LogAnalytics_capacityReservationLevelSentinel }}
@@ -32,8 +32,8 @@ jobs:
       uses: SecureHats/JsonTo-Variable@v0.1.3
       id: build-variable
       with:
-        filePath:       './environments/nonprod.json'
-        outputs:        $true
+        filePath: './environments/nonprod.json'
+        outputs:  $true
  
   deploy-resources:
     runs-on: ubuntu-latest
