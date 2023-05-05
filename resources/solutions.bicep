@@ -23,6 +23,7 @@ param enableWindowsFirewall bool = false
 
 resource workspace 'Microsoft.OperationalInsights/workspaces@2015-11-01-preview' = {
   name: workspaceName
+  location: location
 }
 
 resource azureSentinelSolution 'Microsoft.OperationsManagement/solutions@2015-11-01-preview' = {
