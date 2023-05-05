@@ -36,6 +36,7 @@ resource SecurityInsights 'Microsoft.OperationsManagement/solutions@2015-11-01-p
 
 resource workspaceName_SecurityInsightsSecurityEventCollectionConfiguration 'Microsoft.OperationalInsights/workspaces/dataSources@2020-03-01-preview' = {
   parent: workspace
+  location: resourceGroupLocation
   name: 'SecurityInsightsSecurityEventCollectionConfiguration'
   kind: 'SecurityInsightsSecurityEventCollectionConfiguration'
   properties: {

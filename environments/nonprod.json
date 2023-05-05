@@ -1,8 +1,8 @@
 {
   "LogAnalytics": [
     {
-      "sentinelResourceGroup": "rdk-github-devrg",
-      "workspaceName": "rdk-github-devworkspace",
+      "sentinelResourceGroup": "red-dev-rg",
+      "workspaceName": "rdk-devworkspace",
       "location": "westeurope",
       "pricingTierLogAnalytics": "PerGB2018",
       "retentionInDays": 90
@@ -20,6 +20,11 @@
     {
       "solutionsPath": "packages",
       "customerSolutions": [
+        "azure-ad",
+        "azure-firewall",
+        "paloalto",
+        "cisco-firepower",
+        "rituals-detections"
       ]
     }
   ]
