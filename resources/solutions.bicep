@@ -126,7 +126,7 @@ resource windowsFirewallSolution 'Microsoft.OperationsManagement/solutions@2015-
 
 resource sampleIncident 'Microsoft.SecurityInsights/incidents@2022-12-01-preview' = {
   name: 'sampleIncident(${workspaceName})'
-  scope: 'resource'
+  scope: workspace
   dependsOn: azureSentinelSolution
   properties: {
     severity: 'High'
