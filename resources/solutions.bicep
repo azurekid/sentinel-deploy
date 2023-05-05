@@ -25,6 +25,20 @@ resource workspace 'Microsoft.OperationalInsights/workspaces@2015-11-01-preview'
   name: workspaceName
 }
 
+resource azureSentinelSolution 'Microsoft.OperationsManagement/solutions@2015-11-01-preview' = {
+  name: 'SecurityInsights(${workspaceName})'
+  location: location
+  plan: {
+    name: workspaceName
+    promotionCode: ''
+    product: 'OMSGallery/SecurityInsights'
+    publisher: 'Microsoft'
+  }
+  properties: {
+    workspaceResourceId: workspace.id
+  }
+}
+
 resource behaviorAnalyticsInsightsSolution 'Microsoft.OperationsManagement/solutions@2015-11-01-preview' = if (enableBehaviorAnalyticsInsights) {
   name: 'behaviorAnalyticsInsights(${workspaceName})'
   location: location

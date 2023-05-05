@@ -20,20 +20,6 @@ resource workspace 'Microsoft.OperationalInsights/workspaces@2015-11-01-preview'
   }
 }
 
-resource SecurityInsights 'Microsoft.OperationsManagement/solutions@2015-11-01-preview' = {
-  name: 'SecurityInsights(${workspaceName})'
-  location: resourceGroupLocation
-  plan: {
-    name: 'SecurityInsights(${workspaceName})'
-    product: 'OMSGallery/SecurityInsights'
-    publisher: 'Microsoft'
-    promotionCode: ''
-  }
-  properties: {
-    workspaceResourceId: workspace.id
-  }
-}
-
 resource workspaceName_SecurityInsightsSecurityEventCollectionConfiguration 'Microsoft.OperationalInsights/workspaces/dataSources@2020-03-01-preview' = {
   parent: workspace
   location: resourceGroupLocation
