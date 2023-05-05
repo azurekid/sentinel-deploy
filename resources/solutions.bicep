@@ -128,7 +128,6 @@ resource sampleIncident 'Microsoft.SecurityInsights/incidents@2022-12-01-preview
   name: 'sampleIncident(${workspaceName})'
   scope: 'resource'
   dependsOn: azureSentinelSolution
-  sc
   properties: {
     severity: "High"
     status: 'Open'
