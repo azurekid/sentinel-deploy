@@ -26,7 +26,7 @@ resource workspace 'Microsoft.OperationalInsights/workspaces@2015-11-01-preview'
 }
 
 resource azureSentinelSolution 'Microsoft.OperationsManagement/solutions@2015-11-01-preview' = {
-  name: workspaceName
+  name: 'SecurityInsights(${workspaceName})'
   location: location
   plan: {
     name: workspaceName
@@ -54,10 +54,10 @@ resource behaviorAnalyticsInsightsSolution 'Microsoft.OperationsManagement/solut
 }
 
 resource logicAppsManagementInsightsSolution 'Microsoft.OperationsManagement/solutions@2015-11-01-preview' = if (enableLogicAppsManagementInsights) {
-  name: logicAppsManagementInsightsSolutionName
+  name: 'LogicAppsManagement(${workspaceName})'
   location: location
   plan: {
-    name: logicAppsManagementInsightsSolutionName
+    name: 'LogicAppsManagement(${workspaceName})'
     promotionCode: ''
     product: 'OMSGallery/LogicAppsManagement'
     publisher: 'Microsoft'
@@ -68,10 +68,10 @@ resource logicAppsManagementInsightsSolution 'Microsoft.OperationsManagement/sol
 }
 
 resource dnsAnalyticsSolution 'Microsoft.OperationsManagement/solutions@2015-11-01-preview' = if (enableDnsAnalytics) {
-  name: dnsAnalyticsSolutionName
+  name: 'DnsAnalytics(${workspaceName})'
   location: location
   plan: {
-    name: dnsAnalyticsSolutionName
+    name: 'DnsAnalytics(${workspaceName})'
     promotionCode: ''
     product: 'OMSGallery/DnsAnalytics'
     publisher: 'Microsoft'
@@ -82,10 +82,10 @@ resource dnsAnalyticsSolution 'Microsoft.OperationsManagement/solutions@2015-11-
 }
 
 resource containerInsightsSolution 'Microsoft.OperationsManagement/solutions@2015-11-01-preview' = if (enableContainerInsights) {
-  name: containerInsightsSolutionName
+  name: 'ContainerInsights(${workspaceName})'
   location: location
   plan: {
-    name: containerInsightsSolutionName
+    name: 'ContainerInsights(${workspaceName})'
     promotionCode: ''
     product: 'OMSGallery/ContainerInsights'
     publisher: 'Microsoft'
@@ -96,10 +96,10 @@ resource containerInsightsSolution 'Microsoft.OperationsManagement/solutions@201
 }
 
 resource vmInsightsSolution 'Microsoft.OperationsManagement/solutions@2015-11-01-preview' = if (enableVMInsights) {
-  name: vmInsightsSolutionName
+  name: 'VMInsights(${workspaceName})'
   location: location
   plan: {
-    name: vmInsightsSolutionName
+    name: 'VMInsights(${workspaceName})'
     promotionCode: ''
     product: 'OMSGallery/VMInsights'
     publisher: 'Microsoft'
@@ -110,10 +110,10 @@ resource vmInsightsSolution 'Microsoft.OperationsManagement/solutions@2015-11-01
 }
 
 resource windowsFirewallSolution 'Microsoft.OperationsManagement/solutions@2015-11-01-preview' = if (enableWindowsFirewall) {
-  name: windowsFirewallSolutionName
+  name: 'WindowsFirewall(${workspaceName})'
   location: location
   plan: {
-    name: windowsFirewallSolutionName
+    name: 'WindowsFirewall(${workspaceName})'
     promotionCode: ''
     product: 'OMSGallery/WindowsFirewall'
     publisher: 'Microsoft'
