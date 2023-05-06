@@ -2,7 +2,7 @@
   "LogAnalytics": [
     {
       "sentinelResourceGroup": "rdk-dev-rg",
-      "workspaceName": "rdk-wsm-workspace",
+      "workspaceName": "rdk-tst-workspace",
       "location": "westeurope",
       "pricingTierLogAnalytics": "PerGB2018",
       "retentionInDays": 90
