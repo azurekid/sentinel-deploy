@@ -19,7 +19,9 @@
   "packages": [
     {
       "solutionsPath": "packages",
-      "customerSolutions": []
+      "customerSolutions": [
+        "keyvault"
+      ]
     }
   ]
 }

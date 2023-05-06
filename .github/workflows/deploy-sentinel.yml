@@ -2,7 +2,7 @@ name: Build and Publish Sentinel Solutions
 on:
   push:
     paths:
-      - '.github/workflows/**'
+      - '.github/**'
 jobs:        
   set-variables:
     runs-on: ubuntu-latest
@@ -118,4 +118,3 @@ jobs:
           resourceGroupName: "${{ needs.set-variables.outputs.sentinelResourceGroup }}"
           template:          "./${{ needs.set-variables.outputs.solutionsPath }}/${{ matrix.package }}/deployment.json"
           parameters:        "workspace=${{ needs.set-variables.outputs.workspaceName }}"
-          
