@@ -23,7 +23,7 @@ resource azureSentinelSolution 'Microsoft.OperationsManagement/solutions@2015-11
   name: 'SecurityInsights(${workspaceName})'
   location: resourceGroupLocation
   plan: {
-    name: workspaceName
+    name: 'SecurityInsights(${workspaceName})'
     promotionCode: ''
     product: 'OMSGallery/SecurityInsights'
     publisher: 'Microsoft'
