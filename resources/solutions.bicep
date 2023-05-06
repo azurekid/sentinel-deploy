@@ -19,6 +19,8 @@ param enableVMInsights bool = false
 @description('Option to enable the Microsoft Windows Firewall Solution.')
 param enableWindowsFirewall bool = false
 
+param location string = resourceGroup().location
+
 resource workspace 'Microsoft.OperationalInsights/workspaces@2015-11-01-preview' existing = {
   name: workspaceName
 }
