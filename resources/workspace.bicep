@@ -21,6 +21,7 @@ resource workspace 'microsoft.operationalinsights/workspaces@2021-06-01' = {
 
 resource azureSentinelSolution 'Microsoft.OperationsManagement/solutions@2015-11-01-preview' = {
   name: 'SecurityInsights(${workspaceName})'
+  location: resourceGroupLocation
   plan: {
     name: workspaceName
     promotionCode: ''
