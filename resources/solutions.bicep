@@ -21,23 +21,8 @@ param enableVMInsights bool = false
 @description('Option to enable the Microsoft Windows Firewall Solution.')
 param enableWindowsFirewall bool = false
 
-resource workspace 'Microsoft.OperationalInsights/workspaces@2015-11-01-preview' = {
+resource workspace 'Microsoft.OperationalInsights/workspaces@2015-11-01-preview' existing = {
   name: workspaceName
-  location: location
-}
-
-resource azureSentinelSolution 'Microsoft.OperationsManagement/solutions@2015-11-01-preview' = {
-  name: 'SecurityInsights(${workspaceName})'
-  location: location
-  plan: {
-    name: workspaceName
-    promotionCode: ''
-    product: 'OMSGallery/SecurityInsights'
-    publisher: 'Microsoft'
-  }
-  properties: {
-    workspaceResourceId: workspace.id
-  }
 }
 
 resource behaviorAnalyticsInsightsSolution 'Microsoft.OperationsManagement/solutions@2015-11-01-preview' = if (enableBehaviorAnalyticsInsights) {
@@ -127,13 +112,10 @@ resource windowsFirewallSolution 'Microsoft.OperationsManagement/solutions@2015-
 resource sampleIncident 'Microsoft.SecurityInsights/incidents@2022-12-01-preview' = {
   name: 'sampleIncident(${workspaceName})'
   scope: workspace
-  dependsOn: azureSentinelSolution
   properties: {
     severity: 'High'
-    status: 'Open'
+    status: 'New'
     title: 'Azure AD is compromised'
-    classification: 'Undetermined'
-  
   }
 }
 
