@@ -9,18 +9,21 @@
     }
   ],
   "solutions": {
-    "enableBehaviorAnalyticsInsights": false,
-    "enableLogicAppsManagementInsights": false,
-    "enableDnsAnalytics": false,
-    "enableContainerInsights": false,
-    "enableVMInsights": false,
-    "enableWindowsFirewall": false
+    "enableBehaviorAnalyticsInsights": true,
+    "enableLogicAppsManagementInsights": true,
+    "enableDnsAnalytics": true,
+    "enableContainerInsights": true,
+    "enableVMInsights": true,
+    "enableWindowsFirewall": true
   },
   "packages": [
     {
       "solutionsPath": "packages",
       "customerSolutions": [
-        "keyvault"
+        "keyvault",
+        "azure-ad",
+        "azure-firewall",
+        "cisco-firepower
       ]
     }
   ]
