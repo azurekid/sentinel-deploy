@@ -4,6 +4,9 @@ param workspaceName string
 @description('log retention in days')
 param retentionInDays int = 30
 
+@description('Generated value for deploying resources based or the resourcegroup location.')
+param location string = resourceGroup().location
+
 @description('Option to enable the Microsoft Behavior Analytics Insights Solution.')
 param enableBehaviorAnalyticsInsights bool = false
 
@@ -22,13 +25,9 @@ param enableVMInsights bool = false
 @description('Option to enable the Microsoft Windows Firewall Solution.')
 param enableWindowsFirewall bool = false
 
-param location string = resourceGroup().location
-
-param resourceGroupLocation string = resourceGroup().location
-
 resource workspace 'microsoft.operationalinsights/workspaces@2021-06-01' = {
   name: workspaceName
-  location: resourceGroupLocation
+  location: location
   properties: {
     sku: {
       name: 'PerGB2018'
@@ -41,7 +40,7 @@ resource workspace 'microsoft.operationalinsights/workspaces@2021-06-01' = {
 
 resource azureSentinelSolution 'Microsoft.OperationsManagement/solutions@2015-11-01-preview' = {
   name: 'SecurityInsights(${workspaceName})'
-  location: resourceGroupLocation
+  location: location
   plan: {
     name: 'SecurityInsights(${workspaceName})'
     promotionCode: ''
