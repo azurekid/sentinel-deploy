@@ -4,6 +4,33 @@ param workspaceName string
 @description('log retention in days')
 param retentionInDays int = 30
 
+@description('name of the log analytics workspace')
+param workspaceName string
+
+@description('Option to enable the Microsoft Behavior Analytics Insights Solution.')
+param enableBehaviorAnalyticsInsights bool = false
+
+@description('Option to enable the Logic Apps Management Insights Solution')
+param enableLogicAppsManagementInsights bool = false
+
+@description('Option to enable the Microsoft DNS Analytics Solution.')
+param enableDnsAnalytics bool = false
+
+@description('Option to enable the Microsoft Container Insights Solution.')
+param enableContainerInsights bool = false
+
+@description('Option to enable the Microsoft VM Insights Solution.')
+param enableVMInsights bool = false
+
+@description('Option to enable the Microsoft Windows Firewall Solution.')
+param enableWindowsFirewall bool = false
+
+param location string = resourceGroup().location
+
+resource workspace 'Microsoft.OperationalInsights/workspaces@2015-11-01-preview' existing = {
+  name: workspaceName
+}
+
 param resourceGroupLocation string = resourceGroup().location
 
 resource workspace 'microsoft.operationalinsights/workspaces@2021-06-01' = {
@@ -30,5 +57,99 @@ resource azureSentinelSolution 'Microsoft.OperationsManagement/solutions@2015-11
   }
   properties: {
     workspaceResourceId: workspace.id
+  }
+}
+
+resource behaviorAnalyticsInsightsSolution 'Microsoft.OperationsManagement/solutions@2015-11-01-preview' = if (enableBehaviorAnalyticsInsights) {
+  name: 'behaviorAnalyticsInsights(${workspaceName})'
+  location: location
+  plan: {
+    name: 'behaviorAnalyticsInsights(${workspaceName})'
+    promotionCode: ''
+    product: 'OMSGallery/BehaviorAnalyticsInsights'
+    publisher: 'Microsoft'
+  }
+  properties: {
+    workspaceResourceId: workspace.id
+  }
+}
+
+resource logicAppsManagementInsightsSolution 'Microsoft.OperationsManagement/solutions@2015-11-01-preview' = if (enableLogicAppsManagementInsights) {
+  name: 'LogicAppsManagement(${workspaceName})'
+  location: location
+  plan: {
+    name: 'LogicAppsManagement(${workspaceName})'
+    promotionCode: ''
+    product: 'OMSGallery/LogicAppsManagement'
+    publisher: 'Microsoft'
+  }
+  properties: {
+    workspaceResourceId: workspace.id
+  }
+}
+
+resource dnsAnalyticsSolution 'Microsoft.OperationsManagement/solutions@2015-11-01-preview' = if (enableDnsAnalytics) {
+  name: 'DnsAnalytics(${workspaceName})'
+  location: location
+  plan: {
+    name: 'DnsAnalytics(${workspaceName})'
+    promotionCode: ''
+    product: 'OMSGallery/DnsAnalytics'
+    publisher: 'Microsoft'
+  }
+  properties: {
+    workspaceResourceId: workspace.id
+  }
+}
+
+resource containerInsightsSolution 'Microsoft.OperationsManagement/solutions@2015-11-01-preview' = if (enableContainerInsights) {
+  name: 'ContainerInsights(${workspaceName})'
+  location: location
+  plan: {
+    name: 'ContainerInsights(${workspaceName})'
+    promotionCode: ''
+    product: 'OMSGallery/ContainerInsights'
+    publisher: 'Microsoft'
+  }
+  properties: {
+    workspaceResourceId: workspace.id
+  }
+}
+
+resource vmInsightsSolution 'Microsoft.OperationsManagement/solutions@2015-11-01-preview' = if (enableVMInsights) {
+  name: 'VMInsights(${workspaceName})'
+  location: location
+  plan: {
+    name: 'VMInsights(${workspaceName})'
+    promotionCode: ''
+    product: 'OMSGallery/VMInsights'
+    publisher: 'Microsoft'
+  }
+  properties: {
+    workspaceResourceId: workspace.id
+  }
+}
+
+resource windowsFirewallSolution 'Microsoft.OperationsManagement/solutions@2015-11-01-preview' = if (enableWindowsFirewall) {
+  name: 'WindowsFirewall(${workspaceName})'
+  location: location
+  plan: {
+    name: 'WindowsFirewall(${workspaceName})'
+    promotionCode: ''
+    product: 'OMSGallery/WindowsFirewall'
+    publisher: 'Microsoft'
+  }
+  properties: {
+    workspaceResourceId: workspace.id
+  }
+}
+
+resource sampleIncident 'Microsoft.SecurityInsights/incidents@2022-12-01-preview' = {
+  name: 'sampleIncident(${workspaceName})'
+  scope: workspace
+  properties: {
+    severity: 'High'
+    status: 'New'
+    title: 'Azure AD is compromised'
   }
 }
