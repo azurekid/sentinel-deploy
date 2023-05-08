@@ -94,6 +94,7 @@ jobs:
     #         enableContainerInsights=${{ needs.set-variables.outputs.enableContainerInsights }}
     #         enableVMInsights=${{ needs.set-variables.outputs.enableVMInsights }}
     #       "
+    
       
   deploy_analytics:
     strategy:

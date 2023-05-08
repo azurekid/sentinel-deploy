@@ -4,9 +4,6 @@ param workspaceName string
 @description('log retention in days')
 param retentionInDays int = 30
 
-@description('name of the log analytics workspace')
-param workspaceName string
-
 @description('Option to enable the Microsoft Behavior Analytics Insights Solution.')
 param enableBehaviorAnalyticsInsights bool = false
 
@@ -26,10 +23,6 @@ param enableVMInsights bool = false
 param enableWindowsFirewall bool = false
 
 param location string = resourceGroup().location
-
-resource workspace 'Microsoft.OperationalInsights/workspaces@2015-11-01-preview' existing = {
-  name: workspaceName
-}
 
 param resourceGroupLocation string = resourceGroup().location
 
