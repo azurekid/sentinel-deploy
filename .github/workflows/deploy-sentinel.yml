@@ -7,21 +7,26 @@ jobs:
   set-variables:
     runs-on: ubuntu-latest
     outputs:
-      customerSolutions:     ${{ env.packages_customerSolutions }}
+      customerSolutions: ${{ env.packages_customerSolutions }}
       sentinelResourceGroup: ${{ env.LogAnalytics_sentinelResourceGroup }}
-      workspaceName:         ${{ env.LogAnalytics_workspaceName }}
-      location:              ${{ env.LogAnalytics_location }}
-      solutionsPath:         ${{ env.packages_solutionsPath }}
-      pricingTierLogAnalytics:           ${{ env.LogAnalytics_pricingTierLogAnalytics }}
-      pricingTierSentinel:               ${{ env.LogAnalytics_pricingTierSentinel }}
-      capacityReservationLevelSentinel:  ${{ env.LogAnalytics_capacityReservationLevelSentinel }}
-      retentionInDays:                   ${{ env.LogAnalytics_retentionInDays }}
-      enableBehaviorAnalyticsInsights:   ${{ env.LogAnalytics_enableBehaviorAnalyticsInsights }}
+      workspaceName: ${{ env.LogAnalytics_workspaceName }}
+      location: ${{ env.LogAnalytics_location }}
+      solutionsPath: ${{ env.packages_solutionsPath }}
+      pricingTierLogAnalytics: ${{ env.LogAnalytics_pricingTierLogAnalytics }}
+      pricingTierSentinel: ${{ env.LogAnalytics_pricingTierSentinel }}
+      capacityReservationLevelSentinel: ${{ env.LogAnalytics_capacityReservationLevelSentinel }}
+      retentionInDays: ${{ env.LogAnalytics_retentionInDays }}
+      enableBehaviorAnalyticsInsights: ${{ env.LogAnalytics_enableBehaviorAnalyticsInsights }}
       enableLogicAppsManagementInsights: ${{ env.LogAnalytics_enableLogicAppsManagementInsights }}
-      enableDnsAnalytics:                ${{ env.LogAnalytics_enableDnsAnalytics }}
-      enableContainerInsights:           ${{ env.LogAnalytics_enableContainerInsights }}
-      enableVMInsights:                  ${{ env.LogAnalytics_enableVMInsights }}
-      enableWindowsFirewall:             ${{ env.LogAnalytics_enableWindowsFirewall }}
+      enableDnsAnalytics: ${{ env.LogAnalytics_enableDnsAnalytics }}
+      enableContainerInsights: ${{ env.LogAnalytics_enableContainerInsights }}
+      enableVMInsights: ${{ env.LogAnalytics_enableVMInsights }}
+      enableWindowsFirewall: ${{ env.LogAnalytics_enableWindowsFirewall }}
+      DefenderXDR_enableMDE: ${{ steps.export-defxdr.outputs.DefenderXDR_enableMDE }}
+      DefenderXDR_enableMDO: ${{ steps.export-defxdr.outputs.DefenderXDR_enableMDO }}
+      DefenderXDR_enableMDI: ${{ steps.export-defxdr.outputs.DefenderXDR_enableMDI }}
+      DefenderXDR_enableMDCA: ${{ steps.export-defxdr.outputs.DefenderXDR_enableMDCA }}
+      DeploymentType: ${{ steps.export-defxdr.outputs.DeploymentType }}
   
     steps:
       # Checkout code
@@ -34,6 +39,16 @@ jobs:
       with:
         filePath: './environments/nonprod.json'
         outputs:  $true
+
+    - name: Export DefenderXDR outputs
+      id: export-defxdr
+      if: ${{ always() }}
+      run: |
+        echo "DefenderXDR_enableMDE=${{ env.DefenderXDR_enableMDE }}" >> $GITHUB_OUTPUT
+        echo "DefenderXDR_enableMDO=${{ env.DefenderXDR_enableMDO }}" >> $GITHUB_OUTPUT
+        echo "DefenderXDR_enableMDI=${{ env.DefenderXDR_enableMDI }}" >> $GITHUB_OUTPUT
+        echo "DefenderXDR_enableMDCA=${{ env.DefenderXDR_enableMDCA }}" >> $GITHUB_OUTPUT
+        echo "DeploymentType=${{ env.deploymentType || '' }}" >> $GITHUB_OUTPUT
  
   deploy-resources:
     runs-on: ubuntu-latest
@@ -78,6 +93,20 @@ jobs:
             enableVMInsights=${{ needs.set-variables.outputs.enableVMInsights }}
           "
 
+    - name: Deploy Defender XDR connectors and artifacts
+      if: ${{ needs.set-variables.outputs.DeploymentType == 'DefenderXDR' || env.DeploymentType == 'DefenderXDR' }}
+      uses: azure/arm-deploy@v1
+      with:
+        subscriptionId: ${{ secrets.AZURE_SUBSCRIPTION }}
+        resourceGroupName: ${{ needs.set-variables.outputs.sentinelResourceGroup }}
+        template: "./resources/defenderxdr.bicep"
+        parameters: |
+          workspaceName=${{ needs.set-variables.outputs.workspaceName }}
+          enableMDE=${{ needs.set-variables.outputs.DefenderXDR_enableMDE }}
+          enableMDO=${{ needs.set-variables.outputs.DefenderXDR_enableMDO }}
+          enableMDI=${{ needs.set-variables.outputs.DefenderXDR_enableMDI }}
+          enableMDCA=${{ needs.set-variables.outputs.DefenderXDR_enableMDCA }}
+
     # - name: Create Sentinel Solutions
     #   uses: azure/arm-deploy@v1
     #   with:
@@ -100,6 +129,7 @@ jobs:
     strategy:
       matrix:
         package: ${{ fromJSON(needs.set-variables.outputs.customerSolutions ) }}
+        defenderPackage: ${{ fromJSON(needs.set-variables.outputs.defenderXDRSolutions || '[]') }}
     runs-on: ubuntu-latest
     continue-on-error: true
     needs: 
@@ -110,21 +140,40 @@ jobs:
       # Checkout code
       - uses: actions/checkout@main
           
-      - name: Convert Template files
+      - name: Convert Template files (customer solutions)
+        if: ${{ matrix.package != '' }}
         uses: SecureHats/YamlTo-Arm@v0.1.7
         with:
           filesPath:  ./${{ needs.set-variables.outputs.solutionsPath }}/${{ matrix.package }}
           outputPath: ./${{ needs.set-variables.outputs.solutionsPath }}/${{ matrix.package }}
+
+      - name: Convert Defender XDR artifacts (if any)
+        if: ${{ matrix.defenderPackage != '' }}
+        run: |
+          echo "Converting defender XDR artifacts for package: ${{ matrix.defenderPackage }}"
+          # Try SecureHats conversion if the package contains YAML
+          if [ -d "${{ needs.set-variables.outputs.solutionsPath }}/${{ matrix.defenderPackage }}" ]; then
+            echo "Found package dir: ${{ needs.set-variables.outputs.solutionsPath }}/${{ matrix.defenderPackage }}"
+          else
+            echo "No defender package directory found for ${{ matrix.defenderPackage }}"
+          fi
           
       # Log into Azure
       - uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
           
-      - name: Deploy Analytics
+      - name: Deploy Analytics (customer solutions)
+        if: ${{ matrix.package != '' }}
         uses: azure/arm-deploy@v1
         with:
           subscriptionId:    ${{ secrets.AZURE_SUBSCRIPTION }}
           resourceGroupName: "${{ needs.set-variables.outputs.sentinelResourceGroup }}"
           template:          "./${{ needs.set-variables.outputs.solutionsPath }}/${{ matrix.package }}/deployment.json"
           parameters:        "workspace=${{ needs.set-variables.outputs.workspaceName }}"
+
+      - name: Deploy Defender XDR artifacts
+        if: ${{ matrix.defenderPackage != '' }}
+        run: |
+          echo "Deploying Defender XDR artifacts for package: ${{ matrix.defenderPackage }}"
+          ./scripts/deploy_defenderxdr_artifacts.sh "${{ needs.set-variables.outputs.sentinelResourceGroup }}" "${{ needs.set-variables.outputs.workspaceName }}" "${{ needs.set-variables.outputs.solutionsPath }}/${{ matrix.defenderPackage }}"

@@ -1,0 +1,73 @@
+trigger:
+  branches:
+    include:
+      - main
+      - master
+
+variables:
+  - name: environmentFile
+    value: 'environments/nonprod.json'
+
+stages:
+  - stage: Deploy
+    jobs:
+      - job: SetVariables
+        displayName: 'Read environment configuration'
+        pool:
+          vmImage: 'ubuntu-latest'
+        steps:
+          - checkout: self
+          - task: Bash@3
+            name: parseJson
+            inputs:
+              targetType: 'inline'
+              script: |
+                echo "##[group]Parsing ${environmentFile}"
+                cat ${environmentFile}
+                echo "##[endgroup]"
+
+      - job: DeployResources
+        displayName: 'Deploy Azure resources'
+        dependsOn: SetVariables
+        pool:
+          vmImage: 'ubuntu-latest'
+        steps:
+          - checkout: self
+          - task: AzureCLI@2
+            name: azLogin
+            inputs:
+              azureSubscription: '$(azureServiceConnection)'
+              scriptType: bash
+              scriptLocation: inlineScript
+              inlineScript: |
+                echo "Deploying Resource Group and Workspace"
+                az deployment sub create --location westeurope --template-file resources/resourcegroup.bicep --parameters resourceGroupName=$(jq -r '.LogAnalytics[0].sentinelResourceGroup' ${environmentFile}) location=$(jq -r '.LogAnalytics[0].location' ${environmentFile})
+                az deployment group create --resource-group $(jq -r '.LogAnalytics[0].sentinelResourceGroup' ${environmentFile}) --template-file resources/workspace.bicep --parameters workspaceName=$(jq -r '.LogAnalytics[0].workspaceName' ${environmentFile}) location=$(jq -r '.LogAnalytics[0].location' ${environmentFile})
+
+      - job: DeployDefender
+        displayName: 'Deploy Defender XDR and Artifacts'
+        dependsOn: DeployResources
+        pool:
+          vmImage: 'ubuntu-latest'
+        steps:
+          - checkout: self
+          - task: AzureCLI@2
+            inputs:
+              azureSubscription: '$(azureServiceConnection)'
+              scriptType: bash
+              scriptLocation: inlineScript
+              inlineScript: |
+                RG=$(jq -r '.LogAnalytics[0].sentinelResourceGroup' ${environmentFile})
+                WS=$(jq -r '.LogAnalytics[0].workspaceName' ${environmentFile})
+                echo "Deploying Defender XDR Bicep"
+                az deployment group create --resource-group "$RG" --template-file resources/defenderxdr.bicep --parameters workspaceName="$WS" enableMDE=$(jq -r '.DefenderXDR.enableMDE' ${environmentFile}) enableMDO=$(jq -r '.DefenderXDR.enableMDO' ${environmentFile}) enableMDI=$(jq -r '.DefenderXDR.enableMDI' ${environmentFile}) enableMDCA=$(jq -r '.DefenderXDR.enableMDCA' ${environmentFile})
+                # Deploy packages (simple approach: iterate defenderXDRSolutions)
+                PACKAGES=$(jq -r '.packages[0].defenderXDRSolutions[]? // empty' ${environmentFile}) || true
+                for p in $PACKAGES; do
+                  echo "Processing package: $p"
+                  if [ -d "packages/$p" ]; then
+                    /bin/bash ./scripts/deploy_defenderxdr_artifacts.sh "$RG" "$WS" "packages/$p"
+                  else
+                    echo "Package dir packages/$p not found"
+                  fi
+                done

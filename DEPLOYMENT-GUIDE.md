@@ -1268,6 +1268,53 @@ az sentinel alert-rule list \
 
 ---
 
+## 🛡️ Defender XDR (Microsoft 365 Defender) Support
+
+This repository includes experimental support for Defender XDR. The main additions are:
+
+- Bicep template: `resources/defenderxdr.bicep` — deploys data connectors to the workspace for Defender products (Defender for Endpoint, Office 365, Identity, Cloud Apps).
+- GitHub Actions: `deploy-sentinel.yml` now conditionally deploys Defender XDR connectors when the environment `deploymentType` is set to `DefenderXDR` in `environments/*.json`.
+- Packages: Add Defender XDR packages under `packages/` (e.g., `packages/custom-detections`) and list them in `packages[0].defenderXDRSolutions` in the environment file.
+- Helper script: `scripts/deploy_defenderxdr_artifacts.sh` — a lightweight helper that scans package directories for YAML artifacts and stages them for manual or scripted deployment.
+
+Important notes about Defender XDR artifacts
+
+- Unlike Sentinel analytics rules, many Defender XDR artifacts (custom detections, advanced hunting queries, alert policies, automation rules) are provisioned via Microsoft Graph Security APIs or Defender-specific APIs rather than ARM templates.
+- The helper script included in this repo is a scaffold to assist with file discovery and basic conversion; it does not fully implement Graph API calls. It copies identified artifacts to `/tmp` and prints guidance so you can extend it to call Graph or another service.
+
+Recommended automation approach
+
+1. Register an Azure AD application and grant it the required permissions (for example: AdvancedHunting.ReadWrite.All, SecurityEvents.Write.All). Grant admin consent.
+2. Implement a secure authentication flow (client credentials) in your CI pipeline to acquire an access token for Microsoft Graph.
+3. Convert your YAML detection definitions to the JSON schema expected by the Graph API.
+4. Upload or update the artifact via Graph (or Defender APIs). Validate in the Defender portal.
+
+Quick example (conceptual, not runnable):
+
+```bash
+# Acquire token (MSAL or curl with client credentials)
+ACCESS_TOKEN=$(az account get-access-token --resource https://graph.microsoft.com --query accessToken -o tsv)
+
+# Create custom detection (pseudo-endpoint)
+curl -X POST "https://graph.microsoft.com/beta/security/secureScores" \
+  -H "Authorization: Bearer $ACCESS_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d @my-detection.json
+```
+
+Where to start
+
+- Place sample Defender XDR artifacts in `packages/custom-detections/` and add `custom-detections` to your `environments/nonprod.json` `packages[0].defenderXDRSolutions` array.
+- Extend `scripts/deploy_defenderxdr_artifacts.sh` to perform conversions and Graph API calls, or implement a dedicated script using MSAL and Graph SDK.
+
+Security
+
+- Store client secrets in GitHub Secrets or use Azure Key Vault.
+- Use least-privilege permissions for the app registration.
+
+If you'd like, I can implement a complete MSAL-based deployer in this repo that will authenticate and call the necessary Graph endpoints to create custom detections and advanced hunting queries. That requires an application registration and test tenant for validation.
+
+
 ## 🤝 Contributing
 
 Contributions are welcome! Please see the main [README.md](README.md) for contribution guidelines.

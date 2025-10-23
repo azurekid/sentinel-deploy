@@ -1,0 +1,18 @@
+id: 00000000-0000-4000-8000-000000000001
+name: Suspicious Process Creation - DefenderXDR Sample
+description: |
+  Sample custom detection demonstrating process creation from unusual parent process.
+severity: High
+status: Available
+type: CustomDetection
+query: |
+  DeviceProcessEvents
+  | where ProcessCommandLine contains "--malicious-flag"
+  | where InitiatingProcessFileName != "trusted.exe"
+  | project Timestamp = TimeGenerated, DeviceName, InitiatingProcessFileName, FileName, ProcessCommandLine
+tactics:
+  - Execution
+entities:
+  - type: Host
+    name: DeviceName
+version: 1.0.0
